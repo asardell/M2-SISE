@@ -1,10 +1,10 @@
 # Chapitre 3 : Initiation à Git avec GitHub Desktop
 
-- [Chapitre 3 : Initiation à Git avec GitHub Desktop](#chapitre-3--initiation-à-git-avec-github-desktop)
-  - [Objectifs](#objectifs)
-  - [Découvrir GitHub](#découvrir-github)
-  - [Découvrir GitHub Desktop](#découvrir-github-desktop)
-  - [Liens utiles](#liens-utiles)
+1. [Chapitre 3 : Initiation à Git avec GitHub Desktop](#chapitre-3--initiation-à-git-avec-github-desktop)
+   1. [Objectifs](#objectifs)
+   2. [Découvrir GitHub](#découvrir-github)
+   3. [Découvrir GitHub Desktop](#découvrir-github-desktop)
+   4. [Liens utiles](#liens-utiles)
 
 
 ## Objectifs
@@ -23,7 +23,7 @@ Voici les objectifs de ce module :
 Dans cette partie vous devez suivre ce [tutoriel](https://docs.github.com/fr/get-started/start-your-journey/hello-world) *Hello World*
 
 1. Créer un compte [GitHub](https://github.com/) 
-2. Créer un référentiel `Public` nommé `iut_sd2_rshiny_enedis`.
+2. Créer un référentiel `Public` nommé `m2_enedis`.
 3. Selectionner  `Add a README file`.
 4. Suivre la suite de ce tutoriel
 
@@ -31,7 +31,7 @@ Dans cette partie vous devez suivre ce [tutoriel](https://docs.github.com/fr/get
 
 1. Télécharger [GitHub Desktop](https://desktop.github.com/download/)
 2. [S'authentifier sur GitHub Desktop](https://docs.github.com/fr/desktop/overview/getting-started-with-github-desktop#part-1-installing-and-authenticating)
-3. [Cloner](https://docs.github.com/fr/desktop/overview/getting-started-with-github-desktop#partie3-contribution-%C3%A0-des-projets-avec-github-desktop) le référentiel `iut_sd2_rshiny_enedis`
+3. [Cloner](https://docs.github.com/fr/desktop/overview/getting-started-with-github-desktop#partie3-contribution-%C3%A0-des-projets-avec-github-desktop) le référentiel `m2_enedis`
 4. Créer une branche nommée  `first-enedis-dev`
 5. Ajouter le script effectué à la première séance
 6. Effectuer votre premier `commit` avec GitHub Desktop
