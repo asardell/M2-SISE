@@ -3,7 +3,7 @@
 ## Objectifs
 
 Voici les objectifs de ce module :
-- [x] Différencer classification et régression
+- [x] Différencier classification et régression
 - [x] Evaluer un modèle
 - [x] Optimiser les paramètres d'un modèle
 - [x] Interpréter un modèle
