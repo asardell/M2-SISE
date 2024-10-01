@@ -14,9 +14,9 @@ Voici les objectifs de ce module :
 
 ### Echantillonnage
 ### Arbre de décision
-#### Evaluation de modèle
-#### Validation croisée
-#### Optimisation des paramètres
+### Evaluation de modèle
+### Validation croisée
+### Optimisation des paramètres
 ### D'autres méthodes
 #### KNN
 #### Régression logistique
@@ -26,7 +26,7 @@ Voici les objectifs de ce module :
 ### Variable cible
 ### Echantillonnage
 ### Régression linéaire simple/multiple
-#### Evaluation de modèle
+### Evaluation de modèle
 ### D'autres méthodes
 #### Ridge
 #### Lasso
