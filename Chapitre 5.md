@@ -17,19 +17,21 @@ Voici les objectifs de ce module :
 #### Evaluation de modèle
 #### Validation croisée
 #### Optimisation des paramètres
-### KNN
-### Régression logistique
-### Random Forest
+### D'autres méthodes
+#### KNN
+#### Régression logistique
+#### Random Forest
 
 ## Régression
 ### Variable cible
 ### Echantillonnage
 ### Régression linéaire simple/multiple
 #### Evaluation de modèle
-### Ridge
-### Lasso
-### Elasticnet
-### Arbre de régression
+### D'autres méthodes
+#### Ridge
+#### Lasso
+#### Elasticnet
+#### Arbre de régression
 
 ## Liens utiles
 
