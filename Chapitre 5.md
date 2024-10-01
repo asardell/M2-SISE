@@ -3,10 +3,10 @@
 ## Objectifs
 
 Voici les objectifs de ce module :
-- [x] Comprendre le principe d'une API
-- [x] Savoir utiliser une API
-- [x] Extraire des données d'API
-- [x] Rappels algorithmiques
+- [x] Différencer classification et régression
+- [x] Evaluer un modèle
+- [x] Optimiser les paramètres d'un modèle
+- [x] Interpréter un modèle
 
 ## Classification
 
