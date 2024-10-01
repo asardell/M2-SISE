@@ -130,7 +130,7 @@ else:
 ## Extraction des données d'ENEDIS de consommation par adresse
 
 1. Se familiariser avec les données de Lyon 8ème disponible dans le fichier [consommation-annuelle-residentielle-par-adresse-69008.csv](./data/consommation-annuelle-residentielle-par-adresse-69008.csv)
-2. Utiliser l'API d'ENEDIS depuis leur [inteface](https://data.enedis.fr/explore/dataset/consommation-annuelle-residentielle-par-adresse/api/)
+2. Utiliser l'API d'ENEDIS depuis leur [interface](https://data.enedis.fr/explore/dataset/consommation-annuelle-residentielle-par-adresse/api/)
 3. Extraire l'ensemble des données d'un département ou d'un région en Python
 
 
