@@ -125,6 +125,14 @@ else:
 4. Fusionner les deux dataframes avec uniquement les colonnes communes.
 5. Exporter le résultat en dans un fichie appelé `logements_69.csv`
 
+:bulb: Pour le projet, vous pouvez cibler votre analyse sur un département ou une région pour ne utiliser toutes les données FRANCE.
+
+## Extraction des données d'ENEDIS de consommation par adresse
+
+1. Se familiariser avec les données de Lyon 8ème disponible dans le fichier [consommation-annuelle-residentielle-par-adresse-69008.csv](./data/consommation-annuelle-residentielle-par-adresse-69008.csv)
+2. Utiliser l'API d'ENEDIS depuis leur [inteface](https://data.enedis.fr/explore/dataset/consommation-annuelle-residentielle-par-adresse/api/)
+3. Extraire l'ensemble des données d'un département ou d'un région en Python
+
 
 ## Liens utiles
 
@@ -135,3 +143,6 @@ Voici quelques liens utiles :
 - [API des logements neufs](https://data.ademe.fr/datasets/dpe-v2-logements-neufs/api-doc)
 - [API des logements existants](https://data.ademe.fr/datasets/dpe-v2-logements-existants/api-doc)
 - [API - GET query with range parameters from ElasticSearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#_ranges)
+- [Base Adresse Nationale au format .csv](https://adresse.data.gouv.fr/donnees-nationales)
+- [Enedis API](https://data.enedis.fr/explore/dataset/consommation-annuelle-residentielle-par-adresse/api/)
+- [Enedis API Documentation](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Language-elements)
