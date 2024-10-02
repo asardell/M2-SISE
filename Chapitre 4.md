@@ -50,9 +50,9 @@ Voici les objectifs de ce module :
 9. Effectuer une requête `GET` en récupérant les données de la page 1 avec 5 résultats et en sélectionnant  les colonnes `N°DPE`,  `Etiquette_DPE` et `Date_réception_DPE` et en filtrant par  `Date_réception_DPE` après le *2024-07-31*
 10. Effectuer une requête `GET` en récupérant les données de la page 1 avec 5 résultats et en sélectionnant  les colonnes `N°DPE`,  `Etiquette_DPE`, `Date_réception_DPE` et `Code_postal_(BAN)` en filtrant par le `Code_postal_(BAN)` *69360*. Combien y a t-il de logements concernés dans la base de données ?
 
-:warning: Pour une raison inexpliquée, il est recommandé d'utiliser le paramètre `q` et `q_fields` de l'API pour ce filtre.
+:warning: Pour cette question, il est possible d'utiliser le paramètre `q` et `q_fields` de l'API **OU** utiliser `qs` avec `Code_postal_\(BAN\):"69008"` où `\` est un caractère d'échappement pour que l'url de la requête interprête les caractères spéciaux.
 
-11. Pour ce même code postal, effectuer une requête `GET` en récupérant les données de la page 2 avec 3000 résultats par page et en sélectionnant  les colonnes `N°DPE`,  `Etiquette_DPE`, `Date_réception_DPE` et `Code_postal_(BAN)`. Comment expliquer que le résultat retourne zéro ligne ? 
+1.  Pour ce même code postal, effectuer une requête `GET` en récupérant les données de la page 2 avec 3000 résultats par page et en sélectionnant  les colonnes `N°DPE`,  `Etiquette_DPE`, `Date_réception_DPE` et `Code_postal_(BAN)`. Comment expliquer que le résultat retourne zéro ligne ? 
 
 
 ## Utiliser l'API de l'ADEME avec Python
