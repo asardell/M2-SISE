@@ -271,6 +271,14 @@ import numpy as np
 parameters = {'max_depth' : np.arange(start = 1, stop = 10, step = 1) ,
               'min_samples_leaf' : np.arange(start = 5, stop = 250, step = 50),
               'min_samples_split' : np.arange(start = 10, stop = 500, step = 50)}
+# Calculer le nombre de valeurs pour chaque paramètre
+total_combinaisons = (
+    len(parameters['max_depth']) *
+    len(parameters['min_samples_leaf']) *
+    len(parameters['min_samples_split'])
+)
+
+print(f"Nombre total de modèles à tester: {total_combinaisons}")
 ```
 
 2. Apprentissage avec Grid Search
