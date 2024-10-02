@@ -57,12 +57,7 @@ Voici les objectifs de ce module :
 
 ## Utiliser l'API de l'ADEME avec Python
 
-1. Installer et charger les librairies
-```r
-install.packages(c("httr", "jsonlite"))
-```
-
-2. Effectuer les mêmes questions que l'exercice précédent à l'aide du langage R. Voici un exemple avec les paramètres que vous avez déjà utilisés : 
+1. Effectuer les mêmes questions que l'exercice précédent à l'aide du langage Python. Voici un exemple avec les paramètres que vous avez déjà utilisés : 
 
 ```python
 import requests
