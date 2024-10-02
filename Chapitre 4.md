@@ -91,7 +91,7 @@ if response.status_code == 200:
     print(f"Nombre total de lignes : {content['total']}")
     
     # Afficher les données récupérées
-    df = content['result']
+    df = content['results']
     
     # Afficher les dimensions du DataFrame (nombre de lignes et de colonnes)
     print(f"Dimensions des données récupérées : {len(df)}, {len(df[0]) if df else 0}")
