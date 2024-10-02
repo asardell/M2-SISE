@@ -101,7 +101,7 @@ for col in ls_variables_explicatives[:-1]:
 
 ```python
 df = df[ls_variables_explicatives]
-df = pd.get_dummies(df, columns=['Type_énergie_n.1'], drop_first=True)
+df = pd.get_dummies(df, columns=['Type_énergie_n°1'], drop_first=True)
 ```
 
 ### Echantillonnage
