@@ -364,8 +364,90 @@ plt.show()
 
 ### D'autres méthodes
 #### KNN
+
+1. Modéliser avec la méthode des K plus proches voisins
+
+```python
+from sklearn.neighbors import KNeighborsClassifier
+knn_model = KNeighborsClassifier(n_neighbors=3)
+knn_model.fit(X_train, y_train)
+
+y_pred_knn = knn_model.predict(X_test)
+print('f1_score : ' + str(f1_score(y_test,y_pred_knn,average='binary', pos_label=1)))
+```
+
 #### Régression logistique
+
+1. Modéliser avec la méthode de régression logistique
+   
+```python
+from sklearn.linear_model import LogisticRegression
+
+reg_log = LogisticRegression()
+reg_log_model = reg_log.fit(X_train, y_train)
+y_pred_reg = reg_log_model.predict(X_test)
+
+print('f1_score : ' + str(f1_score(y_test,y_pred_reg,average='binary', pos_label=1)))
+```
+2. Afficher les probabilités d'appartenance aux classes
+
+```python
+reg_log_model.predict_proba(X_test)[0:10]
+```
+
+
+3. Afficher les coefficients du modèle
+
+```python
+coef = pd.DataFrame(reg_log_model.coef_[0,] ,index = X_train.columns, columns=['Coef'])
+coef.loc['Constante'] = reg_log_model.intercept_
+coef
+```
+
+
 #### Random Forest
+
+1. Modéliser avec la méthode des forêts aléatoires
+   
+```python
+from sklearn.ensemble import RandomForestClassifier
+
+rf_clf = RandomForestClassifier(random_state=0)
+rf_model = rfclf.fit(X_train, y_train)
+y_pred_rf = rf_model.predict(X_test)
+
+print('f1_score : ' + str(f1_score(y_test,y_pred_rf,average='binary', pos_label=1)))
+
+pd.crosstab(y_test,y_pred, colnames=['pred'], rownames=['obs'], margins=True)
+```
+
+2. Analyser les variables les plus importantes
+
+```python
+pd.DataFrame(rf_model.feature_importances_,
+             index=X_train.columns.tolist(),
+             columns=['Importances']).sort_values(by = 'Importances', ascending=False)
+```
+
+#### Aller plus loin avec SMOTE pour ré équilibrer les classes
+
+1. Avec la méthode `SMOTE`
+
+```python
+from imblearn.over_sampling import SMOTE
+
+oversample = SMOTE()
+X_train_smote, y_train_smote = oversample.fit_resample(X_train, y_train)
+```
+
+2. Avec la méthode `BorderlineSMOTE`
+
+```python
+from imblearn.over_sampling import BorderlineSMOTE
+
+oversample = BorderlineSMOTE()
+X_train_smote, y_train_smote = oversample.fit_resample(X_train, y_train)
+```
 
 ## Régression
 ### Variable cible
@@ -386,3 +468,4 @@ Voici quelques liens utiles :
 - [Machine learning avancé](https://www.kaggle.com/learn/intermediate-machine-learning)
 - [Interprétation de modèle](https://www.kaggle.com/learn/machine-learning-explainability)
 - [Bagging](https://en.wikipedia.org/wiki/Bootstrap_aggregating#/media/File:Ensemble_Bagging.svg) vs [Boosting](https://en.wikipedia.org/wiki/Boosting_(machine_learning)#/media/File:Ensemble_Boosting.svg)
+- [Cas des classes déséquilibrées](https://machinelearningmastery.com/smote-oversampling-for-imbalanced-classification/)
