@@ -139,6 +139,7 @@ X_test.head()
 ```python
 from sklearn.tree import DecisionTreeClassifier
 model_arbre = DecisionTreeClassifier(max_depth=3 , min_samples_leaf=50, min_samples_split=100)
+model_arbre = model_arbre.fit(X_train,y_train)
 ```
 
 2. Afficher l'arbre de décision
@@ -263,6 +264,7 @@ parameters = {'max_depth' : np.arange(start = 1, stop = 10, step = 1) ,
 
 ```python
 from sklearn.metrics import make_scorer
+from sklearn.model_selection import GridSearchCV
 model_arbre_grid = DecisionTreeClassifier()
 score = make_scorer(f1_score, pos_label=0)
 model_arbre_grid = GridSearchCV(model_arbre_grid, parameters, scoring = score, verbose = 2, cv = 5)
