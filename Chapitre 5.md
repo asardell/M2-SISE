@@ -82,13 +82,20 @@ plt.show()
 5. Analyse des liens entre les Variables Explicatives et la Variable Cible
 
 ```python
-# Boxplot de la surface habitable par rapport à la passoire énergétique
-plt.figure(figsize=(8, 6))
-sns.boxplot(x='passoire_energetique', y='Surface_habitable_logement', data=df)
-plt.title('Boxplot de la Surface Habitable en Fonction de la Passoire Énergétique')
-plt.xlabel('Passoire Énergétique (True = F/G, False = A à E)')
-plt.ylabel('Surface Habitable (m²)')
-plt.show()
+# Boxplot de chaque variable explicative par rapport à la passoire énergétique
+for col in ls_variables_explicatives[:-1]:
+    plt.figure(figsize=(8, 6))
+    
+    # Tracer le boxplot sans les outliers
+    sns.boxplot(x='passoire_energetique', y=col, data=df, showfliers=False)
+    
+    # Automatiser le titre avec le nom de la colonne
+    plt.title(f'Boxplot de {col} en Fonction de la Passoire Énergétique')
+    
+    plt.xlabel('Passoire Énergétique (True = F/G, False = A à E)')
+    plt.ylabel(f'{col}')  # Automatiser l'étiquette de l'axe y avec le nom de la colonne
+    plt.show()
+
 ```
 6. Encodage des variables catégorielles
 
