@@ -70,7 +70,7 @@ plt.show()
 
 ```python
 # Calcul de la matrice de corrélation
-corr_matrix = df[ls_variables_explicatives].corr()
+corr_matrix = df[ls_variables_explicatives[:-1]].corr()
 
 # Affichage de la matrice de corrélation sous forme de heatmap
 plt.figure(figsize=(12, 8))
