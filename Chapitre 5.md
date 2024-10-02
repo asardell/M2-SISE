@@ -35,7 +35,7 @@ df['passoire_energetique'].value_counts(normalize=True)
 
 ```python
 # Vérification des données manquantes
-ls_variables_explicatives = ['Année_construction','Surface_habitable_logement','Coût_total_5_usages','Coût_ECS','Coût_chauffage','Coût_éclairage','Coût_auxiliaires','Coût_refroidissement','Type_énergie_n.1']
+ls_variables_explicatives = ['Année_construction','Surface_habitable_logement','Coût_total_5_usages','Coût_ECS','Coût_chauffage','Coût_éclairage','Coût_auxiliaires','Coût_refroidissement','Type_énergie_n°1']
 ```
 
 2. Inspection des Données Manquantes
