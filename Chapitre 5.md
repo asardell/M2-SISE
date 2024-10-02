@@ -322,43 +322,43 @@ print('f1_score : ' + str(f1_score(y_test,y_pred, average='binary', pos_label=0)
 1. Obtener les probabilités de prédiction  des modèles
 
 ```python
-y_pred_proba_cv = model_arbre_cv.predict_proba(X_test)
-y_pred_proba_grid = model_arbre_grid.predict_proba(X_test)
+# Prédire les probabilités pour la classe positive (1)
+y_proba_cv = model_arbre_cv.predict_proba(X_test)[:, 1]
+y_proba_grid = model_arbre_grid.predict_proba(X_test)[:, 1]
 ```
 
 2. Calculer les Valeurs de la Courbe ROC
 
 ```python
 from sklearn.metrics import roc_curve, roc_auc_score
-fpr1, tpr1, _ = roc_curve(y_test, y_pred_proba_cv)
-roc_auc1 = roc_auc_score(y_test, y_pred_proba_cv)
+# Calculer les courbes ROC
+fpr1, tpr1, _ = roc_curve(y_test, y_proba_cv)
+fpr2, tpr2, _ = roc_curve(y_test, y_proba_grid)
 
-fpr2, tpr2, _ = roc_curve(y_test, y_pred_proba_grid)
-roc_auc2 = roc_auc_score(y_test, y_pred_proba_grid)
+# Calculer l'AUC pour chaque modèle
+auc1 = roc_auc_score(y_test, y_proba_cv)
+auc2 = roc_auc_score(y_test, y_proba_grid)
 ```
 
 4. Tracer les Courbes ROC
 
 ```python
 import matplotlib.pyplot as plt
-# Tracé des courbes ROC
-plt.figure(figsize=(10, 6))
-plt.plot(fpr1, tpr1, color='blue', label=f'Modèle 1 (AUC = {roc_auc1:.2f})')
-plt.plot(fpr2, tpr2, color='red', label=f'Modèle 2 (AUC = {roc_auc2:.2f})')
+# Tracer les courbes ROC
+plt.figure(figsize=(8, 6))
+plt.plot(fpr1, tpr1, label=f'Arbre CV (AUC = {auc1:.2f})', color='blue')
+plt.plot(fpr2, tpr2, label=f'Arbre Grid (AUC = {auc2:.2f})', color='green')
 
-# Tracé de la ligne de chance
-plt.plot([0, 1], [0, 1], color='grey', linestyle='--')
+# Ajouter la diagonale (aléatoire)
+plt.plot([0, 1], [0, 1], 'k--', label='Modèle aléatoire')
 
-# Détails du graphique
-plt.xlim([0.0, 1.0])
-plt.ylim([0.0, 1.0])
-plt.xlabel('Taux de Faux Positifs')
-plt.ylabel('Taux de Vrais Positifs')
-plt.title('Courbes ROC des Modèles')
+# Ajouter des labels et un titre
+plt.xlabel('Taux de Faux Positifs (FPR)')
+plt.ylabel('Taux de Vrais Positifs (TPR)')
+plt.title('Comparaison des courbes ROC entre deux modèles')
 plt.legend(loc='lower right')
-plt.grid()
 
-# Affichage du graphique
+# Afficher le graphique
 plt.show()
 ```
 
