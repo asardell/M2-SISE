@@ -45,7 +45,10 @@ ls_variables_explicatives = ['Année_construction','Surface_habitable_logement',
 df[ls_variables_explicatives].isnull().sum()
 #Remplacer les valeurs NA par la moyenne des colonnes
 for col in variables_continues:
-    df[col].fillna(df[col].mean(), inplace=True)
+    try:
+        df[col] = df[col].fillna(df[col].mean())
+    except:
+        print(f"Erreur sur la colonne {col})
 ```
 
 3.  Analyse des Distributions des Variables Explicatives
