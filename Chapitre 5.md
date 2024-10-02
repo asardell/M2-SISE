@@ -100,6 +100,7 @@ for col in ls_variables_explicatives[:-1]:
 6. Encodage des variables catégorielles
 
 ```python
+df = df[ls_variables_explicatives]
 df = pd.get_dummies(df, columns=['Type_énergie_n.1'], drop_first=True)
 ```
 
@@ -108,7 +109,8 @@ df = pd.get_dummies(df, columns=['Type_énergie_n.1'], drop_first=True)
 1. Créer un objet `X` avec les variables explicatives
 
 ```python
-X = df[ls_variables_explicatives]
+# Utiliser set.difference() pour exclure la colonne cible de ls_variables_explicatives
+X =df[df.columns.difference(['passoire_energetique'])]
 ```
 
 2. Crée un objet `Y` avec la variable à expliquer
