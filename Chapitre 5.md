@@ -100,7 +100,8 @@ for col in ls_variables_explicatives[:-1]:
 6. Encodage des variables catégorielles
 
 ```python
-df = df[ls_variables_explicatives]
+# Concaténer les deux listes : ls_variables_explicatives et ['passoire_energetique']
+df = df[ls_variables_explicatives + ['passoire_energetique']]
 df = pd.get_dummies(df, columns=['Type_énergie_n°1'], drop_first=True)
 ```
 
