@@ -236,7 +236,7 @@ print('f1_score : ' + str(f1_score(y_test,y_pred, average='weighted')))
 ### Validation croisée
 
 ```python
-from sklearn.model_selection import cross_val_predict
+from sklearn.model_selection import cross_val_predict, cross_val_score
 from sklearn.metrics import classification_report
 
 # Création d'un modèle d'arbre de décision
