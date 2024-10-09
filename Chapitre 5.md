@@ -450,8 +450,173 @@ X_train_smote, y_train_smote = oversample.fit_resample(X_train, y_train)
 ```
 
 ## Régression
+
 ### Variable cible
+
+1. Analyse de la distribution de la variable cible (`Coût_total_5_usages`)
+
+```python
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+target = "Coût_total_5_usages"
+
+# Créer un boxplot pour une colonne spécifique
+sns.boxplot(data=df, x = target, showfliers=False)
+
+# Afficher le graphique
+plt.title(f'Boxplot sur le {target}')
+plt.show()
+```
+
+2. Analyse les déciles de la variable cible (`Coût_total_5_usages`)
+
+```python
+import pandas as pd
+import numpy as np
+
+# Créer une séquence de 0 à 1 avec un pas de 0.1
+sequence = np.arange(0, 1.1, 0.1)
+
+# Calculer les déciles (0.1, 0.2, ..., 0.9) en ajoutant les percentiles à describe()
+resultat = df[target].describe(percentiles=sequence)
+```
+
+3. Modifier les paramètres d'affichage par défaut de pandas
+
+```python
+# Changer l'option pour afficher toutes les colonnes
+pd.set_option('display.max_columns', None)
+
+# Changer l'option pour afficher toutes les lignes
+pd.set_option('display.max_rows', None)
+```
+
+### Variables explicatives
+
+1. Selection des variables explicatives
+
+```python
+# Vérification des données manquantes
+ls_variables_explicatives = ['Année_construction',
+'Période_construction','Surface_habitable_logement','Type_énergie_n°1',
+'Etiquette_DPE',
+'N°_étage_appartement', 'Hauteur_sous-plafond',
+'Logement_traversant_(0/1)',
+'Présence_brasseur_air_(0/1)',
+'Indicateur_confort_été',
+'Isolation_toiture_(0/1)',
+'Protection_solaire_exterieure_(0/1)',
+'Inertie_lourde_(0/1)',
+'Deperditions_baies_vitrées',
+'Deperditions_enveloppe',
+'Déperditions_murs',
+'Deperditions_planchers_bas',
+'Deperditions_planchers_hauts',
+'Déperditions_ponts_thermiques',
+'Déperditions_portes',
+'Déperditions_renouvellement_air',
+'Qualité_isolation_enveloppe',
+'Qualité_isolation_menuiseries',
+'Qualité_isolation_murs',
+'Qualité_isolation_plancher_bas']
+```
+
+2. Inspection des Données Manquantes
+   
+```python
+# Vérification des données manquantes
+df[ls_variables_explicatives].isnull().sum()
+```
+
+3. Imputation des Données Manquantes sur variable quantitatives
+
+```python
+from sklearn.impute import KNNImputer
+
+# Sélectionner uniquement les colonnes quantitatives (numériques)
+quant_cols = df[ls_variables_explicatives].select_dtypes(include=[np.number]).columns
+
+# Afficher les colonnes quantitatives
+print("Colonnes quantitatives :", quant_cols)
+
+# Initialiser le KNNImputer
+imputer = KNNImputer(n_neighbors=3)
+
+# Appliquer l'imputation sur les colonnes quantitatives
+df[quant_cols] = imputer.fit_transform(df[quant_cols])
+
+# Vérification des données manquantes
+df[quant_cols].isnull().sum()
+```
+
+3. Imputation des Données Manquantes sur variable qualitatives
+
+```python
+# Sélectionner toutes les colonnes non numériques (qualitatives)
+categorical_cols = df.select_dtypes(exclude=[np.number]).columns
+
+# Appliquer l'imputation par la valeur la plus fréquente (mode) pour chaque colonne catégorielle
+for col in categorical_cols:
+    df[col]. = df[col].fillna(df[col].mode()[0])
+
+# Vérification des données manquantes
+df[categorical_cols].isnull().sum()
+```
+
+4. Analyse des Corrélations entre les Variables Explicatives et la variable cible
+
+```python
+# Calcul de la matrice de corrélation
+corr_matrix = df[quant_cols + [target] ].corr()
+
+# Affichage de la matrice de corrélation sous forme de heatmap
+plt.figure(figsize=(12, 8))
+sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', linewidths=0.5)
+plt.title('Matrice de Corrélation')
+plt.show()
+```
+
+5. Encodage des variables catégorielles
+
+```python
+# Concaténer les deux listes : ls_variables_explicatives et ['passoire_energetique']
+df = df[ls_variables_explicatives + [target]]
+df = pd.get_dummies(df, columns=[categorical_cols], drop_first=True)
+```
+
 ### Echantillonnage
+
+1. Créer un objet `X` avec les variables explicatives
+
+```python
+# Utiliser set.difference() pour exclure la colonne cible de ls_variables_explicatives
+X =df[df.columns.difference([target])]
+```
+
+2. Crée un objet `Y` avec la variable à expliquer
+
+```python
+Y = df[target]
+```
+
+3.  Scinder l'échantillon en train / test
+
+```python
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, Y,
+                                                    test_size = 0.30,
+                                                    random_state = 42)
+```
+
+4. Afficher un extrait de  `X_train` et `X_test`
+   
+```python
+print(X_train.shape)
+print(X_test.shape)
+X_test.head()
+```
+
 ### Régression linéaire simple/multiple
 ### Evaluation de modèle
 ### D'autres méthodes
