@@ -449,6 +449,53 @@ oversample = BorderlineSMOTE()
 X_train_smote, y_train_smote = oversample.fit_resample(X_train, y_train)
 ```
 
+#### Aller plus loin avec SHAP pour interpréter ses modèles
+
+
+*Shapley Values* proviennent de la théorie des jeux coopératifs. Elles permettent de mesurer l'importance de chaque joueur dans un jeu. Cette méthode s'applique aux caractéristiques d'un modèle, en cherchant à comprendre comment chaque caractéristique contribue aux prédictions d'un modèle.
+
+[SHAP](https://towardsdatascience.com/using-shap-values-to-explain-how-your-machine-learning-model-works-732b3f40e137) est particulièrement utile car il :
+
+- Interprète localement : Il explique comment une prédiction spécifique est obtenue pour une observation donnée.
+- Interprète globalement : En moyenne, il montre l'importance des caractéristiques pour l'ensemble des prédictions.
+- Considère les interactions : SHAP tient compte des interactions entre les caractéristiques, ce qui rend ses explications robustes.
+
+1. Installer la librairie
+
+```sh
+pip install shap
+```
+
+2. Calculer les valeurs SHAP
+
+
+```python
+import shap
+
+# Créer un explainer basé sur le modèle Random Forest
+explainer = shap.TreeExplainer(rf_model)
+
+# Calculer les valeurs SHAP pour les données de test
+shap_values = explainer.shap_values(X_test)
+```
+
+3. Visualiser les résultats
+
+```python
+# Expliquer la première prédiction dans le jeu de test
+shap.initjs()
+shap.force_plot(explainer.expected_value, shap_values[0], X_test.iloc[0])
+```
+
+4. Visualiser l'importance des variables pour tous le modèle
+
+```python
+# Importance globale des caractéristiques (summary plot)
+shap.summary_plot(shap_values, X_test)
+```
+
+:warning: Calculer les valeurs SHAP pour des modèles très complexes ou avec de très grandes données peut être coûteux en termes de temps.
+
 ## Régression
 
 ### Variable cible
@@ -634,3 +681,4 @@ Voici quelques liens utiles :
 - [Interprétation de modèle](https://www.kaggle.com/learn/machine-learning-explainability)
 - [Bagging](https://en.wikipedia.org/wiki/Bootstrap_aggregating#/media/File:Ensemble_Bagging.svg) vs [Boosting](https://en.wikipedia.org/wiki/Boosting_(machine_learning)#/media/File:Ensemble_Boosting.svg)
 - [Cas des classes déséquilibrées](https://machinelearningmastery.com/smote-oversampling-for-imbalanced-classification/)
+- [Interprter des modèles avec SHAP](https://towardsdatascience.com/using-shap-values-to-explain-how-your-machine-learning-model-works-732b3f40e137)
