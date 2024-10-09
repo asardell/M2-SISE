@@ -95,7 +95,7 @@ Les données ne seront pas représentatives de la France et ne peuvent donc pas 
 2. Créer un dataframe avec uniquement les logements dont l'étiquette DPE est D,E,F,G
 3. Créer un dataframe avec les logements anciens dont la période de construction est *avant 1960*
 4. Créer un dataframe avec les logements qui ont une surface habitable strictement supérieure à la surface habitable moyenne
-5. Créer un dataframe en triant les logements qui consomme le plus d'énergie 5 usages en m² (`Conso_5_usages.m._é_finale`)à ceux qui consomme le moins
+5. Créer un dataframe en triant les logements qui consomme le plus d'énergie 5 usages en m² (`Conso_5_usages/m²_é_finale`)à ceux qui consomme le moins
 6. Créer un dataframe en triant par étiquette DPE, puis période de construction, puis par coût en chauffage décroissant.
 
 ### Agrégation
