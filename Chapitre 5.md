@@ -600,14 +600,24 @@ ls_variables_explicatives = ['Année_construction',
 'Qualité_isolation_plancher_bas']
 ```
 
-2. Inspection des Données Manquantes
+2. Statistiques des variables explicatives
+
+```python
+# Créer une séquence de 0 à 1 avec un pas de 0.1
+sequence = np.arange(0, 1.1, 0.1)
+
+# Calculer les déciles (0.1, 0.2, ..., 0.9) en ajoutant les percentiles à describe()
+resultat = df.describe(percentiles=sequence)
+```
+
+3. Inspection des Données Manquantes
    
 ```python
 # Vérification des données manquantes
 df[ls_variables_explicatives].isnull().sum()
 ```
 
-3. Imputation des Données Manquantes sur variable quantitatives
+4. Imputation des Données Manquantes sur variable quantitatives
 
 ```python
 from sklearn.impute import KNNImputer
@@ -628,26 +638,25 @@ df[quant_cols] = imputer.fit_transform(df[quant_cols])
 df[quant_cols].isnull().sum()
 ```
 
-3. Imputation des Données Manquantes sur variable qualitatives
+5. Imputation des Données Manquantes sur variable qualitatives
 
 ```python
 # Sélectionner toutes les colonnes non numériques (qualitatives)
-categorical_cols = df.select_dtypes(exclude=[np.number]).columns
+categorical_cols = df[ls_variables_explicatives].select_dtypes(exclude=[np.number]).columns
 
 # Appliquer l'imputation par la valeur la plus fréquente (mode) pour chaque colonne catégorielle
 for col in categorical_cols:
-    df[col]. = df[col].fillna(df[col].mode()[0])
+    df[col] = df[col].fillna(df[col].mode()[0])
 
 # Vérification des données manquantes
 df[categorical_cols].isnull().sum()
 ```
 
-4. Analyse des Corrélations entre les Variables Explicatives et la variable cible
+6. Analyse des Corrélations entre les Variables Explicatives et la variable cible
 
 ```python
 # Calcul de la matrice de corrélation
-corr_matrix = df[quant_cols + [target] ].corr()
-
+corr_matrix = round(df[list(quant_cols) + [target] ].corr(),2)
 # Affichage de la matrice de corrélation sous forme de heatmap
 plt.figure(figsize=(12, 8))
 sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', linewidths=0.5)
@@ -655,12 +664,12 @@ plt.title('Matrice de Corrélation')
 plt.show()
 ```
 
-5. Encodage des variables catégorielles
+7. Encodage des variables catégorielles
 
 ```python
-# Concaténer les deux listes : ls_variables_explicatives et ['passoire_energetique']
-df = df[ls_variables_explicatives + [target]]
-df = pd.get_dummies(df, columns=[categorical_cols], drop_first=True)
+# Concaténer les deux listes : ls_variables_explicatives et target
+df = df[list(ls_variables_explicatives) + [target]]
+df = pd.get_dummies(df, columns=categorical_cols, drop_first=True)
 ```
 
 ### Echantillonnage
@@ -695,13 +704,153 @@ print(X_test.shape)
 X_test.head()
 ```
 
-### Régression linéaire simple/multiple
+### Régression linéaire multiple
+
+1. Calculer la régression linéaire multiple
+
+```python
+from sklearn.linear_model import LinearRegression
+lr_model = LinearRegression()
+lr_model = lr_model.fit(X_train,y_train)
+```
+
+2. Afficher les coefficients
+
+```python
+coef = pd.DataFrame(lr_model.coef_ ,index = X_train.columns, columns=['Coef'])
+coef.loc['Constante'] = lr_model.intercept_
+coef
+```
+
 ### Evaluation de modèle
+
+1. Prédire sur les données test
+
+```python
+y_pred = lr_model.predict(X_test)
+y_pred
+```
+
+3. Afficher les prédictions 
+   
+```python
+# Taille de la figure
+plt.figure(figsize=(10, 6))
+
+# Nuage de points pour les valeurs observées et prédites
+plt.scatter(y_test, y_pred, color='black', label='Valeurs Observées vs Prédictions')
+
+# Tracer la droite d'équation y = x
+max_val = max(y_test.max(), y_pred.max())
+plt.plot([0, max_val], [0, max_val], color='blue', linestyle='--', label='y = x (Droite de référence)')
+
+# Définir les limites des axes
+plt.xlim(0, max_val)
+plt.ylim(0, max_val)
+
+# Assurer que les axes ont la même échelle
+plt.gca().set_aspect('equal', adjustable='box')
+
+# Ajouter des labels et une légende
+plt.xlabel('Valeurs Observées')
+plt.ylabel('Valeurs Prédites')
+plt.title('Nuage de Points: Valeurs Observées vs Prédictions')
+plt.legend()
+
+# Afficher le graphique
+plt.show()
+```
+
+4. Calculer les métriques
+
+```python
+from sklearn.metrics import mean_squared_error, r2_score
+print("RMSE : " + str(mean_squared_error(y_test, y_pred, squared= False)))
+print("R² : " + str(r2_score(y_test, y_pred)))
+```
+
+
 ### D'autres méthodes
+
 #### Ridge
+
+1. Modéliser avec Ridge
+```python
+from sklearn.linear_model import Ridge
+ridge_model = Ridge(alpha=0)
+ridge_model = ridge_model.fit(X_train_CR,y_train)
+
+y_pred = ridge_model.predict(X_test_CR)
+
+print("RMSE : " + str(mean_squared_error(y_test, y_pred, squared= False)))
+print("R² : " + str(r2_score(y_test, y_pred)))
+```
+
+2. Analyser les coefficients
+
+```python
+coef = pd.DataFrame(ridge_model.coef_ ,index = X_train.columns, columns=['Coef'])
+coef.loc['Constante'] = ridge_model.intercept_
+coef
+```
+
+
 #### Lasso
+
+1. Modéliser avec Lasso
+   
+```python
+from sklearn.linear_model import Lasso
+lasso_model = Lasso(alpha=10)
+lasso_model = lasso_model.fit(X_train_CR,y_train)
+
+y_pred = lasso_model.predict(X_test_CR)
+
+print("RMSE : " + str(mean_squared_error(y_test, y_pred, squared= False)))
+print("R² : " + str(r2_score(y_test, y_pred)))
+```
+
+2. Analyser les coefficients
+
+
+```python
+coef = pd.DataFrame(lasso_model.coef_ ,
+                    index = X_train.columns, columns=['Coef'])
+coef.loc['Constante'] = lasso_model.intercept_
+coef
+```
+
+
+
 #### Elasticnet
+
+
+```python
+
+```
+
+```python
+
+```
+
+```python
+
+```
+
 #### Arbre de régression
+
+
+```python
+
+```
+
+```python
+
+```
+
+```python
+
+```
 
 ## Liens utiles
 
