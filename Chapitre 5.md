@@ -8,6 +8,37 @@ Voici les objectifs de ce module :
 - [x] Optimiser les paramètres d'un modèle
 - [x] Interpréter un modèle
 
+- [Chapitre 5 : Les bases du machine learning](#chapitre-5--les-bases-du-machine-learning)
+  - [Objectifs](#objectifs)
+  - [Classification](#classification)
+    - [Variable cible](#variable-cible)
+    - [Variables explicatives](#variables-explicatives)
+    - [Echantillonnage](#echantillonnage)
+    - [Arbre de décision](#arbre-de-décision)
+    - [Evaluation de modèle](#evaluation-de-modèle)
+    - [Validation croisée](#validation-croisée)
+    - [Optimisation des paramètres](#optimisation-des-paramètres)
+    - [Courbe ROC pour comparer des modèles](#courbe-roc-pour-comparer-des-modèles)
+    - [D'autres méthodes](#dautres-méthodes)
+      - [KNN](#knn)
+      - [Régression logistique](#régression-logistique)
+      - [Random Forest](#random-forest)
+      - [Aller plus loin avec SMOTE pour ré équilibrer les classes](#aller-plus-loin-avec-smote-pour-ré-équilibrer-les-classes)
+      - [Aller plus loin avec SHAP pour interpréter ses modèles](#aller-plus-loin-avec-shap-pour-interpréter-ses-modèles)
+  - [Régression](#régression)
+    - [Variable cible](#variable-cible-1)
+    - [Variables explicatives](#variables-explicatives-1)
+    - [Echantillonnage](#echantillonnage-1)
+    - [Régression linéaire simple/multiple](#régression-linéaire-simplemultiple)
+    - [Evaluation de modèle](#evaluation-de-modèle-1)
+    - [D'autres méthodes](#dautres-méthodes-1)
+      - [Ridge](#ridge)
+      - [Lasso](#lasso)
+      - [Elasticnet](#elasticnet)
+      - [Arbre de régression](#arbre-de-régression)
+  - [Liens utiles](#liens-utiles)
+
+
 ## Classification
 
 ### Variable cible
