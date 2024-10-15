@@ -706,6 +706,8 @@ X_test.head()
 
 ### Régression linéaire multiple
 
+#### Sans centrer réduire
+
 1. Calculer la régression linéaire multiple
 
 ```python
@@ -731,7 +733,7 @@ y_pred = lr_model.predict(X_test)
 y_pred
 ```
 
-3. Afficher les prédictions 
+3. Afficher les prédictions. On peut également zoomer en modifiant les bornes.
    
 ```python
 # Taille de la figure
@@ -765,9 +767,89 @@ plt.show()
 
 ```python
 from sklearn.metrics import mean_squared_error, r2_score
+print("MAE : " + str(mean_absolute_error(y_test, y_pred)))
 print("RMSE : " + str(mean_squared_error(y_test, y_pred, squared= False)))
 print("R² : " + str(r2_score(y_test, y_pred)))
 ```
+
+#### Avec centrer réduire
+
+Le fait d'utiliser cette méthode nous contraint à faire quelques pirouettes avec la structure de nos données (array, panda dataframe, etc.)
+
+1. Centrer et réduire les échantillons `X_train` et `X_test`
+
+```python
+from sklearn.preprocessing import StandardScaler
+
+# Initialiser le StandardScaler
+scaler = StandardScaler()
+
+# Ajuster (fit) le scaler uniquement sur les données d'entraînement et appliquer la transformation (fit_transform)
+X_train_scaled = scaler.fit_transform(X_train)
+
+# Appliquer la transformation sur les données de test (transform uniquement, sans fit)
+X_test_scaled = scaler.transform(X_test)
+```
+
+2. Centrer et réduire les échantillons `y_train` et `y_test`
+  
+```python
+# Initialiser le StandardScaler pour les cibles (y)
+scaler_y = StandardScaler()
+
+# Convertir y_train et y_test en tableau NumPy pour appliquer reshape
+y_train_scaled = scaler_y.fit_transform(np.array(y_train).reshape(-1, 1))
+y_test_scaled = scaler_y.transform(np.array(y_test).reshape(-1, 1))
+```
+
+3. Modéliser avec la régression linéaire
+
+```python
+from sklearn.linear_model import LinearRegression
+lr_model = LinearRegression()
+lr_model = lr_model.fit(X_train_scaled,y_train_scaled)
+```
+
+4. Afficher les nouveaux coefficients.
+
+```python
+# Aplatir le coefficient du modèle pour correspondre à l'index des colonnes de X_train
+coef_scaled = pd.DataFrame(lr_model.coef_.flatten(), index=X_train.columns, columns=['Coef'])
+
+# Ajouter l'intercept (biais) au DataFrame
+coef_scaled.loc['Constante'] = lr_model.intercept_[0]  # Si intercept_ est un tableau
+
+# Modifier l'affichage global des nombres en pandas pour utiliser un format décimal avec 6 chiffres après la virgule
+pd.options.display.float_format = '{:.6f}'.format
+
+# Affichage des coefficients avec les nouvelles options
+coef_scaled
+```
+
+5.  Vérifier les métriques du modèle
+
+```python
+y_pred = lr_model.predict(X_test_scaled)
+print("MAE : " + str(mean_absolute_error(y_test_scaled, y_pred)))
+print("RMSE : " + str(mean_squared_error(y_test_scaled, y_pred, squared= False)))
+print("R² : " + str(r2_score(y_test_scaled, y_pred)))
+```
+
+6. Remettre à l'échelle la variable cible
+
+```python
+y_pred = scaler_y.inverse_transform(y_pred)
+y_pred
+```
+
+### Data leakage 
+
+Le data leakage (ou fuite de données) est un problème courant en science des données et en apprentissage automatique qui se produit lorsque des informations issues des données de test ou des données futures sont accidentellement utilisées lors de l'entraînement du modèle. Cela fausse les performances et les résultats car le modèle a accès à des informations qu'il ne devrait pas connaître pendant l'entraînement.
+
+Types courants de data leakage :
+- Fuite de données dans les caractéristiques : Cela se produit lorsque certaines variables explicatives contiennent des informations qui ne seraient pas disponibles dans un scénario réel lors de la prédiction.
+- Pré-traitement sur l'ensemble des données : Appliquer des transformations (comme la normalisation, la standardisation ou l'imputation de valeurs manquantes) avant de diviser les données en jeu d'entraînement et de test peut provoquer une fuite. Le modèle pourrait ainsi « apprendre » des statistiques sur les données de test.
+- Utiliser des variables explicatives qui sont complètement liées ou directement dérivées de la variable cible peut entraîner un type de problème similaire au data leakage, souvent appelé redondance ou colinéarité parfaite. Dans ce cas, le modèle apprend à tricher, car il dispose d'informations qui lui permettent de prédire la cible de manière triviale, sans véritable apprentissage
 
 
 ### D'autres méthodes
@@ -778,79 +860,262 @@ print("R² : " + str(r2_score(y_test, y_pred)))
 ```python
 from sklearn.linear_model import Ridge
 ridge_model = Ridge(alpha=0)
-ridge_model = ridge_model.fit(X_train_CR,y_train)
-
-y_pred = ridge_model.predict(X_test_CR)
-
-print("RMSE : " + str(mean_squared_error(y_test, y_pred, squared= False)))
-print("R² : " + str(r2_score(y_test, y_pred)))
+ridge_model = ridge_model.fit(X_train_scaled,y_train_scaled)
 ```
 
-2. Analyser les coefficients
+2. Analyser les coefficients. Même résultat qu'une régression linéaire
 
 ```python
-coef = pd.DataFrame(ridge_model.coef_ ,index = X_train.columns, columns=['Coef'])
-coef.loc['Constante'] = ridge_model.intercept_
-coef
+# Aplatir le coefficient du modèle pour correspondre à l'index des colonnes de X_train
+coef_scaled = pd.DataFrame(ridge_model.coef_.flatten(), index=X_train.columns, columns=['Coef'])
+
+# Ajouter l'intercept (biais) au DataFrame
+coef_scaled.loc['Constante'] = ridge_model.intercept_[0]  # Si intercept_ est un tableau
+
+# Modifier l'affichage global des nombres en pandas pour utiliser un format décimal avec 6 chiffres après la virgule
+pd.options.display.float_format = '{:.6f}'.format
+
+# Affichage des coefficients avec les nouvelles options
+coef_scaled
 ```
 
+3. Tester avec plusieurs valeurs de `alpha `
+
+```python
+# Générer des valeurs d'alpha (logarithmique entre 1e-5 et 1e3)
+alphas = np.logspace(-5, 3, 100)
+print(alphas)
+```
+
+4. Etudier l'évolution de la valeur des coefficients
+
+```python
+# Initialiser un tableau pour stocker les coefficients
+coefs = []
+
+# Pour chaque alpha, ajuster le modèle Ridge et stocker les coefficients
+for alpha in alphas:
+    ridge_model = Ridge(alpha=alpha)
+    ridge_model.fit(X_train_scaled, y_train_scaled)
+    coefs.append(ridge_model.coef_.flatten())  # Stocker les coefficients aplatis (1D)
+
+# Convertir les coefficients en array pour pouvoir les tracer
+coefs = np.array(coefs)
+
+# Tracer les coefficients en fonction des alphas
+ax = plt.gca()
+
+ax.plot(alphas, coefs)
+ax.set_xscale("log")
+ax.set_xlim(ax.get_xlim()[::-1])  # Inverser l'axe pour que les alphas décroissent
+plt.xlabel("alpha")
+plt.ylabel("weights")
+plt.title("Ridge coefficients as a function of the regularization")
+plt.axis("tight")
+plt.show()
+```
 
 #### Lasso
 
 1. Modéliser avec Lasso
-   
 ```python
 from sklearn.linear_model import Lasso
-lasso_model = Lasso(alpha=10)
-lasso_model = lasso_model.fit(X_train_CR,y_train)
-
-y_pred = lasso_model.predict(X_test_CR)
-
-print("RMSE : " + str(mean_squared_error(y_test, y_pred, squared= False)))
-print("R² : " + str(r2_score(y_test, y_pred)))
+lass_model = Lasso(alpha=0)
+lass_model = lass_model.fit(X_train_scaled,y_train_scaled)
 ```
 
-2. Analyser les coefficients
-
+2. Analyser les coefficients. 
 
 ```python
-coef = pd.DataFrame(lasso_model.coef_ ,
-                    index = X_train.columns, columns=['Coef'])
-coef.loc['Constante'] = lasso_model.intercept_
-coef
+# Aplatir le coefficient du modèle pour correspondre à l'index des colonnes de X_train
+coef_scaled = pd.DataFrame(lass_model.coef_.flatten(), index=X_train.columns, columns=['Coef'])
+
+# Ajouter l'intercept (biais) au DataFrame
+coef_scaled.loc['Constante'] = lass_model.intercept_[0]  # Si intercept_ est un tableau
+
+# Modifier l'affichage global des nombres en pandas pour utiliser un format décimal avec 6 chiffres après la virgule
+pd.options.display.float_format = '{:.6f}'.format
+
+# Affichage des coefficients avec les nouvelles options
+coef_scaled
 ```
 
+3. Tester avec plusieurs valeurs de `alpha `
 
+```python
+# Générer des valeurs d'alpha (logarithmique entre 1e-5 et 1e3)
+alphas = np.logspace(-5, 3, 100)
+print(alphas)
+```
+
+4. Etudier l'évolution de la valeur des coefficients
+
+```python
+# Initialiser un tableau pour stocker les coefficients
+coefs = []
+
+# Pour chaque alpha, ajuster le modèle Lasso et stocker les coefficients
+for alpha in alphas:
+    lasso_model = Lasso(alpha=alpha, max_iter=100)  # max_iter augmenté pour assurer la convergence
+    lasso_model.fit(X_train_scaled, y_train_scaled)
+    coefs.append(lasso_model.coef_.flatten())  # Stocker les coefficients aplatis (1D)
+
+# Convertir les coefficients en array pour pouvoir les tracer
+coefs = np.array(coefs)
+
+# Tracer les coefficients en fonction des alphas
+ax = plt.gca()
+
+ax.plot(alphas, coefs)
+ax.set_xscale("log")
+ax.set_xlim(ax.get_xlim()[::-1])  # Inverser l'axe pour que les alphas décroissent
+plt.xlabel("alpha")
+plt.ylabel("weights")
+plt.title("Lasso coefficients as a function of the regularization")
+plt.axis("tight")
+plt.show()
+```
 
 #### Elasticnet
 
 
 ```python
+from sklearn.linear_model import ElasticNet
 
-```
+# Générer des valeurs d'alpha (logarithmique entre 1e-5 et 1e3)
+alphas = np.logspace(-5, 3, 100)
 
-```python
+# Initialiser un tableau pour stocker les coefficients
+coefs = []
 
-```
+# Paramètre l1_ratio : ici on peut choisir une valeur qui balance Lasso et Ridge (par exemple 0.5)
+l1_ratio = 0.5  # L1 et L2 sont équilibrés
 
-```python
+# Pour chaque alpha, ajuster le modèle ElasticNet et stocker les coefficients
+for alpha in alphas:
+    elasticnet_model = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, max_iter=10000)  # max_iter pour convergence
+    elasticnet_model.fit(X_train_scaled, y_train_scaled)
+    coefs.append(elasticnet_model.coef_.flatten())  # Stocker les coefficients aplatis (1D)
 
+# Convertir les coefficients en array pour pouvoir les tracer
+coefs = np.array(coefs)
+
+# Tracer les coefficients en fonction des alphas
+ax = plt.gca()
+
+ax.plot(alphas, coefs)
+ax.set_xscale("log")
+ax.set_xlim(ax.get_xlim()[::-1])  # Inverser l'axe pour que les alphas décroissent
+plt.xlabel("alpha")
+plt.ylabel("weights")
+plt.title("ElasticNet coefficients as a function of the regularization")
+plt.axis("tight")
+plt.show()
 ```
 
 #### Arbre de régression
 
-
+1. Modéliser avec un arbre de régression
+   
 ```python
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.metrics import mean_absolute_error
 
+tree_model = DecisionTreeRegressor(max_depth = 40,min_samples_split = 2, min_samples_leaf = 1)
+
+tree_model.fit(X_train_scaled, y_train_scaled)
+
+y_pred = tree_model.predict(X_test_scaled)
+print("RMSE : " + str(mean_squared_error(y_test_scaled, y_pred, squared= False)))
+print("MAE : " + str(mean_absolute_error(y_test_scaled, y_pred)))
+
+# Aplatir y_test_scaled pour le rendre 1D
+y_test_scaled = y_test_scaled.flatten()  # Transforme en vecteur 1D
+
+# Affichage du scatterplot
+sns.scatterplot(x=y_test_scaled, y=y_pred, legend=None)
+plt.title(f'Decision Tree Regressor: R2 = {r2_score(y_test_scaled, y_pred):.3f}')
+plt.xlabel('Valeurs réelles')
+plt.ylabel('Valeurs prédites')
+plt.show()
+
+# Affichage des autres métriques
+print("R2 : " + str(r2_score(y_test_scaled, y_pred)))
+print("RMSE : " + str(mean_squared_error(y_test_scaled, y_pred, squared=False)))
+print("MAE : " + str(mean_absolute_error(y_test_scaled, y_pred)))
 ```
 
-```python
-
-```
+2. Afficher l'arbre de régression
 
 ```python
+from sklearn.tree import export_graphviz
+import graphviz
 
+# Exporter l'arbre au format DOT
+dot_data = export_graphviz(tree_model, out_file=None, 
+                           feature_names=X_train.columns,  
+                           filled=True, rounded=True,  
+                           special_characters=True)  
+# Visualiser avec graphviz
+graph = graphviz.Source(dot_data)  
+graph.render("tree_model", format="png", view=True)  # Sauvegarder et ouvrir l'arbre
 ```
+
+#### Forêt aléatoire pour la régression
+
+1. Modéliser avec des forêts aléatoires
+   
+```python
+from sklearn.ensemble import RandomForestRegressor
+
+# Créer et entraîner un modèle de forêt aléatoire
+rf_model = RandomForestRegressor(n_estimators=100, max_depth=5, random_state=42)
+rf_model.fit(X_train_scaled, y_train_scaled)
+
+# Prédictions sur l'ensemble de test
+y_pred = rf_model.predict(X_test_scaled)
+
+# Calcul des métriques
+print("RMSE : " + str(mean_squared_error(y_test_scaled, y_pred, squared=False)))
+print("MAE : " + str(mean_absolute_error(y_test_scaled, y_pred)))
+print("R2 : " + str(r2_score(y_test_scaled, y_pred)))
+
+# Aplatir y_test_scaled pour le rendre 1D
+y_test_scaled = y_test_scaled.flatten()  # Transforme en vecteur 1D
+
+# Affichage du scatterplot
+sns.scatterplot(x=y_test_scaled, y=y_pred, legend=None)
+plt.title(f'Random Forest Regressor: R2 = {r2_score(y_test_scaled, y_pred):.3f}')
+plt.xlabel('Valeurs réelles')
+plt.ylabel('Valeurs prédites')
+plt.show()
+```
+
+2. Analyser les variables pertinentes
+
+```python
+# Extraire les importances des variables
+importances = rf_model.feature_importances_
+
+# Créer un DataFrame avec les importances
+importance_df = pd.DataFrame({'Feature': X_train.columns, 'Importance': importances})
+
+# Trier les variables par importance (en ordre décroissant)
+importance_df = importance_df.sort_values(by='Importance', ascending=False)
+
+# Affichage de l'importance des variables
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Importance', y='Feature', data=importance_df)
+plt.title('Importance des Variables dans la Forêt Aléatoire')
+plt.xlabel('Importance')
+plt.ylabel('Variable')
+plt.show()
+
+# Afficher le DataFrame des importances
+print(importance_df)
+```
+
 
 ## Liens utiles
 
