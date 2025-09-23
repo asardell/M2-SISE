@@ -17,11 +17,11 @@ Voici les objectifs de ce module :
 ## Planning
 
 1. Chapitre 1 : Rappel du langage Python
-2. Chapitre 2 : Initiation à Git avec GitHub Desktop
-3. Chapitre 3 : Les environnements virtuels
-4. Chapitre 4 : Utiliser une API pour extraire des données
-5. Chapitre 5 : Les bases du machine learning
-6. Chapitre 6 : Développer une application intéractive
+2. Chapitre 2 : Utiliser une API pour extraire des données
+3. Chapitre 3 : Initiation à Git avec GitHub Desktop
+4. Chapitre 4 : Les environnements virtuels
+6. Chapitre 5 : Les bases du machine learning
+7. Chapitre 6 : Développer une application intéractive
 
 ## Liens utiles
 
