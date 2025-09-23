@@ -9,23 +9,24 @@ Voici les objectifs de ce module :
 - [x] Les bases de Streamlit
 - [x] Les bases de la création d'API avec Flask
 
-1. [Chapitre 6 : Développer une application intéractive](#chapitre-6--développer-une-application-intéractive)
-   1. [Objectifs](#objectifs)
-   2. [Dash](#dash)
-      1. [Hello World](#hello-world)
-      2. [Se connecter à des données](#se-connecter-à-des-données)
-      3. [Merci ChatGPT](#merci-chatgpt)
-   3. [Shiny with Python](#shiny-with-python)
-      1. [Hello World](#hello-world-1)
-      2. [Se connecter à des données](#se-connecter-à-des-données-1)
-   4. [Streamlit](#streamlit)
-      1. [Hello World](#hello-world-2)
-      2. [Se connecter à des données](#se-connecter-à-des-données-2)
-      3. [Aller plus loin](#aller-plus-loin)
-   5. [Créer une API avec différentes ROUTE](#créer-une-api-avec-différentes-route)
-      1. [Création](#création)
-      2. [Tester les routes](#tester-les-routes)
-   6. [Liens utiles](#liens-utiles)
+- [Chapitre 6 : Développer une application intéractive](#chapitre-6--développer-une-application-intéractive)
+  - [Objectifs](#objectifs)
+  - [Dash](#dash)
+    - [Hello World](#hello-world)
+    - [Se connecter à des données](#se-connecter-à-des-données)
+    - [Merci ChatGPT](#merci-chatgpt)
+  - [Shiny with Python](#shiny-with-python)
+    - [Hello World](#hello-world-1)
+    - [Se connecter à des données](#se-connecter-à-des-données-1)
+  - [Streamlit](#streamlit)
+    - [Hello World](#hello-world-2)
+    - [Se connecter à des données](#se-connecter-à-des-données-2)
+    - [Aller plus loin](#aller-plus-loin)
+  - [Initiation à Docker](#initiation-à-docker)
+  - [Créer une API avec différentes ROUTE](#créer-une-api-avec-différentes-route)
+    - [Création](#création)
+    - [Tester les routes](#tester-les-routes)
+  - [Liens utiles](#liens-utiles)
 
 
 ## Dash
@@ -408,6 +409,11 @@ st.dataframe(df)
 ```sh
 streamlit hello
 ```
+
+
+## Initiation à Docker
+
+Intro à Docker (en cours de rédaction)
 
 ## Créer une API avec différentes ROUTE
 

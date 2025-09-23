@@ -1,143 +1,164 @@
-# Chapitre 4 : Utiliser une API pour extraire des données
+# Chapitre 4 : Les environnements virtuels
 
-## Objectifs
+## OBJECTIFS
 
-Voici les objectifs de ce module :
-- [x] Comprendre le principe d'une API
-- [x] Savoir utiliser une API
-- [x] Extraire des données d'API
-- [x] Rappels algorithmiques
+Voici les objectifs de ce cours :
+- [x] Comprendre l'importance des environnements virtuels
+- [x] Créer des environnements virtuels
+- [x] Installer des librairies python
+- [x] Exporter et importer un environnement
 
-## C'est quoi une API ?
+Dans ce TD, vous utiliserez le même repository  `m2_enedis` de la séance précédente. Pour simplifier le versionnement de votre projet, vous pouvez utiliser GitHub Desktop à la place des commandes Git Bash si vous le souhaitez. Merci de mettre votre repository en public.
 
-<img src="./img/visuel-api.png" alt="" style="height: 200px;">
+## Exercice 1 - Création d'environnement virtuel
 
-1. Défintion d'une API selon [api.gouv.fr](https://api.gouv.fr/guides/api-definition)
-2. Les differentes [methodes](https://blog.postman.com/what-are-http-methods/) d'appel API.
+Toutes les questions de cet exercice sont à réaliser dans l'invite de commandes. Attention, les commandes peuvent-être différentes si vous n'êtes pas sur un environnement Windows.
 
-| **Nom Méthode** | Description |
-|------------------|-------------|
-| **GET** | Récupérer des données d'un serveur | 
-| **POST** |Envoyer des données au serveur pour créer une ressource ou déclencher une action | 
-| **PUT** | Mettre à jour ou remplacer une ressource existante sur le serveur | 
-| **DELETE** | Supprimer une ressource sur le serveur | 
+1. Ouvrer une fenêtre d'invite de commandes.
 
-3. Les différentes réponses de l'API
+2. Vérifier que Python 3 est bien installé sur votre machine avec la commande suivante :
    
-| **Code** | **Signification**                     | **Description**                                |
-|----------|---------------------------------------|------------------------------------------------|
-| **200**  | OK                                    | Requête réussie.                               |
-| **201**  | Created                               | Nouvelle ressource créée avec succès.          |
-| **204**  | No Content                            | Aucune donnée à retourner (succès sans contenu).|
-| **400**  | Bad Request                           | Requête mal formée.                            |
-| **401**  | Unauthorized                          | Authentification requise ou échouée.           |
-| **403**  | Forbidden                             | Accès refusé à la ressource.                   |
-| **404**  | Not Found                             | Ressource non trouvée.                         |
-| **500**  | Internal Server Error                 | Erreur serveur générique.                      |
-| **503**  | Service Unavailable                   | Serveur indisponible temporairement.           |
+```sh
+python --version
+```
+ou
 
+```sh
+python -V
+```
+Si ce n'est pas le cas, installez Python 3
 
-## Utiliser l'API de l'ADEME sur leur site internet
+3. Vérifier le chemin d'installation de Python sur votre système avec la commande suivante :
 
-1. Aller sur l'[API des logements existants de l'ADEME](https://data.ademe.fr/datasets/dpe-v2-logements-existants/api-doc)
-2. Dans données, cliquer sur la méthode `GET /lines`
-3. Effectuer une première requête `GET` en récupérant les données de la première page. Observer la réponse de la requête.
-4. Effectuer une requête `GET` en récupérant les données de la page 1 avec 5 résultats
-5. Effectuer une requête `GET` en récupérant les données de la page 1 avec 5 résultats et en sélectionnant les colonnes `N°DPE`,  `Etiquette_DPE` et `Date_réception_DPE`
-6. Effectuer une requête `GET` en récupérant les données de la page 1 avec 5 résultats et en sélectionnant  les colonnes `N°DPE`,  `Etiquette_DPE` et `Date_réception_DPE` et en filtrant par  `Etiquette_DPE` égale à E
-7. Effectuer une requête `GET` en récupérant les données de la page 1 avec 20 résultats et en sélectionnant  les colonnes `N°DPE`,  `Etiquette_DPE` et `Date_réception_DPE` et en filtrant par  `Etiquette_DPE` égale à E, F ou G.
-8. Effectuer une requête `GET` en récupérant les données de la page 1 avec 5 résultats et en sélectionnant  les colonnes `N°DPE`,  `Etiquette_DPE` et `Date_réception_DPE` et en filtrant par  `Date_réception_DPE` entre le *2024-01-01* au *2024-01-31*
-9. Effectuer une requête `GET` en récupérant les données de la page 1 avec 5 résultats et en sélectionnant  les colonnes `N°DPE`,  `Etiquette_DPE` et `Date_réception_DPE` et en filtrant par  `Date_réception_DPE` après le *2024-07-31*
-10. Effectuer une requête `GET` en récupérant les données de la page 1 avec 5 résultats et en sélectionnant  les colonnes `N°DPE`,  `Etiquette_DPE`, `Date_réception_DPE` et `Code_postal_(BAN)` en filtrant par le `Code_postal_(BAN)` *69360*. Combien y a t-il de logements concernés dans la base de données ?
-
-:warning: Pour cette question, il est possible d'utiliser le paramètre `q` et `q_fields` de l'API **OU** utiliser `qs` avec `Code_postal_\(BAN\):"69008"` où `\` est un caractère d'échappement pour que l'url de la requête interprête les caractères spéciaux.
-
-1.  Pour ce même code postal, effectuer une requête `GET` en récupérant les données de la page 2 avec 3000 résultats par page et en sélectionnant  les colonnes `N°DPE`,  `Etiquette_DPE`, `Date_réception_DPE` et `Code_postal_(BAN)`. Comment expliquer que le résultat retourne zéro ligne ? 
-
-
-## Utiliser l'API de l'ADEME avec Python
-
-1. Effectuer les mêmes questions que l'exercice précédent à l'aide du langage Python. Voici un exemple avec les paramètres que vous avez déjà utilisés : 
-
-```python
-import requests
-import json
-
-# URL de base de l'API
-base_url = "https://data.ademe.fr/data-fair/api/v1/datasets/dpe-v2-logements-existants/lines"
-
-# Paramètres de la requête
-params = {
-    "page": 1,
-    "size": 5,
-    "select": "N°DPE,Code_postal_(BAN),Etiquette_DPE,Date_réception_DPE",
-    "q": "69008",
-    "q_fields": "Code_postal_(BAN)",
-    "qs": "Date_réception_DPE:[2023-06-29 TO 2023-08-30]"
-}
-
-# Effectuer la requête GET avec les paramètres
-response = requests.get(base_url, params=params)
-
-# Vérifier le statut de la réponse
-print(f"Statut de la réponse : {response.status_code}")
-
-# Si la requête a été effectuée avec succès, traiter le contenu
-if response.status_code == 200:
-    # Charger le contenu de la réponse en JSON
-    content = response.json()
-    
-    # Afficher le nombre total de lignes dans la base de données
-    print(f"Nombre total de lignes : {content['total']}")
-    
-    # Afficher les données récupérées
-    df = content['results']
-    
-    # Afficher les dimensions du DataFrame (nombre de lignes et de colonnes)
-    print(f"Dimensions des données récupérées : {len(df)}, {len(df[0]) if df else 0}")
-    
-    # Si nécessaire, afficher les données
-    print(df)
-else:
-    print("Erreur lors de la requête")
+```sh
+where python
 ```
 
-## Extraction des données complètes pour le Rhône
+4. Lister les librairies Python actuellement installées sur votre système avec la commande suivante : 
+   
+```sh
+pip list
+```
 
-:warning: Pour protéger l'infrastructure de publication de données, l'ADEME a limité les appels par des règles  :
+5. Avant d'aller plus loin, un peu de lecture sur l'intérêt de créer en environnement virtuel : [cliquez-ici](https://www.docstring.fr/glossaire/environnement-virtuel)
 
--  Un utilisateur anonyme ne peut pas effectuer plus de 600 requêtes par interval de 60 secondes. Sa vitesse de téléchargement totale sera limitée à 2 MB/s pour les contenus statiques (fichiers de données, pièces jointes, etc.) et à 500 kB/s pour les autres appels.
--  La valeur `page` * `size` ne peut pas dépasser 10 000
+6. Installer la librairie *`virtualenv`* sur votre environnement Python par défaut avec la commande suivante :
+   
+```sh
+pip install virtualenv
+```
 
-:bulb: Pour contourner ces limitations, nous allons récupérer uniquement les données d'un département. L'astuce étant d'appeler l'API en parcourant chaque commune.
+7. Vérifier que la librairie est correctement installée  avec la commande suivante : 
 
-1. Récupérer tous les codes postaux du département du Rhône(69) à l'aide du fichier `adresses-69.csv`
-2. Avec une boucle, parcourir chaque code postal afin de reconstruire le dataframe complet des logements existants sur le département. Exporter le résultat dans un fichier appelé `existants_69.csv`
+```sh
+pip list
+```
 
-:warning: S'il y a plus de 10000 logements pour un code postal, il est conseillé d'ajouter un filtre supplémentaire pour parcourir les `Date_réception_DPE` de chaque année depuis 2021.
+8. Créer un environnement virtuel appelé `env-enedis` avec la commande suivante :
+   
+```sh
+py -m venv env-enedis
+```
+`-m` est une option qui indique à l'interpréteur Python d'exécuter un module en tant que script.
 
-3. Même question pour les logements neufs. Exporter le résultat dans un fichier appelé `neufs_69.csv`
-4. Fusionner les deux dataframes avec uniquement les colonnes communes.
-5. Exporter le résultat en dans un fichie appelé `logements_69.csv`
+![](img/warning.gif)
 
-:bulb: Pour le projet, vous pouvez cibler votre analyse sur un département ou une région pour ne utiliser toutes les données FRANCE.
+Il faut bien penser à changer de chemin et vous positionner dans le dossier où vous souhaitez créer votre environnement virtuel. Voici un exemple : 
 
-## Extraction des données d'ENEDIS de consommation par adresse
+```sh
+cd C:\Users\Anthony\Documents\asardell\my_virtual_envs
+```
 
-1. Se familiariser avec les données de Lyon 8ème disponible dans le fichier [consommation-annuelle-residentielle-par-adresse-69008.csv](./data/consommation-annuelle-residentielle-par-adresse-69008.csv)
-2. Utiliser l'API d'ENEDIS depuis leur [interface](https://data.enedis.fr/explore/dataset/consommation-annuelle-residentielle-par-adresse/api/)
-3. Extraire l'ensemble des données d'un département ou d'un région en Python
+Pour rappel, la commande `cd` pour *change directory* permet de se déplacer de dossier en dossier en changeant le chemin du répertoire courant.
+Une fois dans le bon dossier vous pouvez créer votre environnement.
+
+:warning: Ne pas créer votre environnement virtuel dans votre dossier projet.
+
+## Exercice 2 - Activer son environnement virtuel
+
+Toutes les questions de cet exercice sont à réaliser dans l'invite de commandes. Attention, les commandes peuvent-être différentes si vous n'êtes pas sur un environnement Windows.
+
+1. Avant d'aller plus loin, lire attentivement cette partie du cours de l'exercice 1 : [cliquez-ici](https://www.docstring.fr/glossaire/environnement-virtuel/#comment-activer-un-environnement-virtuel-python)
+
+2. Se déplacer jusqu'au fichier d'activation `activate.bat` de l'environnement avec les commandes suivantes : 
+
+```sh
+cd ./env-enedis/Scripts
+```
+
+```sh
+activate.bat
+```
+
+`./` permet d'éviter de récrire tous le chemin relatif.
+
+3. Vérifier sur votre terminal que l'environnement est bien activé.
+
+![](img/env_activate.PNG)
+
+4. Désactiver votre environnement avec la commande suivante : 
+
+```sh
+deactivate
+```
+On remarque que l'environnement est désactivé.
+
+5. Activer de nouveau votre environnement et afficher la liste des librairies actuellement installées avec la commande suivante :
+
+```sh
+pip list
+```
+
+6. Il y a très peu de librairies, installez les librairies `numpy` et `pandas`. Vérifier avec la commande `pip list`.
+
+7. Exporter votre environnement virtuel dans un fichier appelé *requirements.txt* avec la commande suivante : 
+
+```sh
+pip freeze > requirements.txt
+```
+
+Cette commande capture la liste des packages installés avec leurs versions exactes et les enregistre dans un fichier *requirements.txt* qui sera créé dans le **répertoire actuel**.
+
+![](img/warning.gif)
+
+Dans cette question on souhaite enregistrer le fichier *requirements.txt* à la racine de votre repository local.
+
+8. Désactiver votre environnement et fermer le terminal de commande.
+
+9. Créer un autre environnement virtuel appelé `test-env` pour faire un test uniquement dans le cadre de cet exercice.
+
+10.  Le fichier *requirements.txt* généré dans la question précédente peut ensuite être partagé avec d'autres personnes ou utilisé pour recréer un environnement Python. Pour installer les dépendances à partir de ce fichier, vous pouvez utiliser la commande suivante :
+
+```sh
+pip install -r requirements.txt
+```
+
+:warning: Il faut se placer dans le répértoire où le fichier est présent sinon il sera introuvable.
+
+11. Vérifier que les librairies du fichier *requirements.txt* ont bien été installées sur l'environnement `test-env`.
+
+## Exercice 3 - Utiliser son environnement virtuel dans Visual Studio Code
+
+Toutes les questions de cet exercice sont à réaliser sur une branche *`DEV`* de votre repository `m2_enedis` en activant votre environnement virtuel `env-enedis`.
+
+1. Ouvrer Visual Studio Code et activer votre environnement depuis un invite de commandes *cmd* de VS Code. 
+
+2. Créer un script python appelée *`step1.py`* à la racine de votre projet. Ajouter une ligne de code dans le script :
+
+```sh
+print("Bonjour")
+```
+
+3. Tester l'exécution du script *`step1.py`*. Pour cela, naviguez dans l'invite de commandes *cmd* de VS Code vers le répertoire où se trouve votre script Python en utilisant la commande `cd`. Une fois que vous êtes dans le bon répertoire, vous pouvez exécuter votre script en utilisant la commande :
+
+```sh
+python step1.py 
+```
+4. Le résultat de votre print s'affiche dans la console.
 
 
 ## Liens utiles
 
-Voici quelques liens utiles :
+Voici quelques liens utiles qui pourrait vous aider durant ce projet :
 
-- [Défintion d'une API selon api.gouv.fr](https://api.gouv.fr/guides/api-definition)
-- [HTTP methodes](https://blog.postman.com/what-are-http-methods/)
-- [API des logements neufs](https://data.ademe.fr/datasets/dpe-v2-logements-neufs/api-doc)
-- [API des logements existants](https://data.ademe.fr/datasets/dpe-v2-logements-existants/api-doc)
-- [API - GET query with range parameters from ElasticSearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#_ranges)
-- [Base Adresse Nationale au format .csv](https://adresse.data.gouv.fr/donnees-nationales)
-- [Enedis API](https://data.enedis.fr/explore/dataset/consommation-annuelle-residentielle-par-adresse/api/)
-- [Enedis API Documentation](https://help.opendatasoft.com/apis/ods-explore-v2/#section/Opendatasoft-Query-Language-(ODSQL)/Language-elements)
+- [Environnement virtuel](https://www.docstring.fr/glossaire/environnement-virtuel)
