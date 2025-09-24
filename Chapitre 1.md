@@ -1,24 +1,23 @@
-# Chapitre 1 : Rappel du langage R
+# Chapitre 1 : Rappel du langage Python
 
-1. [Chapitre 1 : Rappel du langage R](#chapitre-1--rappel-du-langage-r)
-   1. [Objectifs](#objectifs)
-   2. [Importation des données :](#importation-des-données-)
-   3. [Statistiques générales](#statistiques-générales)
-   4. [Manipulation des données :](#manipulation-des-données-)
-      1. [Découvrir la librairie `pandas`](#découvrir-la-librairie-pandas)
-      2. [Filtre](#filtre)
-      3. [Agrégation](#agrégation)
-   5. [Création de graphique  :](#création-de-graphique--)
-      1. [Graphiques élémentaires](#graphiques-élémentaires)
-      2. [Régression linéaire simple](#régression-linéaire-simple)
-      3. [Cartographie](#cartographie)
-   6. [Liens utiles](#liens-utiles)
+- [Chapitre 1 : Rappel du langage Python](#chapitre-1--rappel-du-langage-python)
+  - [Objectifs](#objectifs)
+  - [Importation des données :](#importation-des-données-)
+  - [Statistiques générales](#statistiques-générales)
+  - [Manipulation des données :](#manipulation-des-données-)
+    - [Découvrir la librairie `pandas`](#découvrir-la-librairie-pandas)
+    - [Filtre](#filtre)
+    - [Agrégation](#agrégation)
+  - [Création de graphique  :](#création-de-graphique--)
+    - [Graphiques élémentaires](#graphiques-élémentaires)
+    - [Régression linéaire simple](#régression-linéaire-simple)
+    - [Cartographie](#cartographie)
+  - [Liens utiles](#liens-utiles)
 
 ## Objectifs
 
 Voici les objectifs de ce chapitre :
 - [x] Rappel des bases du langage
-- [x] Manipuler des vecteurs
 - [x] Manipuler des dataframes
 - [x] Calculer des statistiques
 - [x] Construire des graphiques
@@ -36,7 +35,7 @@ Les données ne seront pas représentatives de la France et ne peuvent donc pas 
 3. Afficher la dimension des 2 datasets
 4. Créer une colonne nommée `Logement` dans les deux datasets avec la valeur `ancien` ou `neuf` selon la source.
 5. La variable `Année_construction` n'apparaît pas dans les données des logements neufs. Créer cette colonne avec la valeur de l'année en cours.
-6. Fusionner les deux dataframes avec uniquement les colonnes communes. Plus d'info dans le [dictionnaire de données](https://data.ademe.fr/data-fair/api/v1/datasets/dpe-v2-logements-existants/metadata-attachments/DPE_Dictionnaire%20de%20donn%C3%A9es_JDD_V3.pdf).
+6. Fusionner les deux dataframes avec uniquement les colonnes communes. Plus d'info dans le [dictionnaire de données](https://data.ademe.fr/datasets/dpe03existant).
 7. Créer une colonne avec uniquement l'année de la `Date de réception du DPE`
 8. Créer une colonne qui vérifie si `Coût_total_5_usages` correspond bien à la somme du `Coût_chauffage` + `Coût_éclairage` + `Coût_ECS` + `Coût_refroidissement` +  `Coût_auxiliaires`.
 9. Créer une colonne `Coût chauffage en %` qui est la part du coût du chauffage dans le coût total 5 usages.
@@ -137,4 +136,4 @@ Voici quelques liens utiles :
 - [Contexte du Challenge ENEDIS](https://defis.data.gouv.fr/defis/65b76f15d7874915c8e41298)
 - [Base Adresse Nationale](https://adresse.data.gouv.fr/donnees-nationales)
 - [Comprendre son DPE](https://www.ecologie.gouv.fr/sites/default/files/documents/comprendre_mon_dpe.pdf)
-- [Dictionnaire de données](https://data.ademe.fr/data-fair/api/v1/datasets/dpe-v2-logements-existants/metadata-attachments/DPE_Dictionnaire%20de%20donn%C3%A9es_JDD_V3.pdf)
+- [Dictionnaire de données](https://data.ademe.fr/datasets/dpe03existant)
