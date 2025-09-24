@@ -70,7 +70,7 @@ base_url = "https://data.ademe.fr/data-fair/api/v1/datasets/dpe03existant/lines"
 params = {
     "page": 1,
     "size": 5,
-    "select": "numeri_dpe,date_reception_dpe,code_postal_ban,etiquette_ban
+    "select": "numero_dpe,date_reception_dpe,code_postal_ban,etiquette_dpe",
     "q": "69008",
     "q_fields": "code_postal_ban",
     "qs": "date_reception_dpe:[2023-06-29 TO 2023-08-30]"
