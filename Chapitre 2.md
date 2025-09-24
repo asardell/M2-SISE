@@ -39,7 +39,7 @@ Voici les objectifs de ce module :
 
 ## Utiliser l'API de l'ADEME sur leur site internet
 
-1. Aller sur l'[API des logements existants de l'ADEME](https://data.ademe.fr/datasets/dpe-v2-logements-existants/api-doc)
+1. Aller sur l'[API des logements existants de l'ADEME](https://data.ademe.fr/datasets/dpe03existant/api-doc?operation=readLines)
 2. Dans données, cliquer sur la méthode `GET /lines`
 3. Effectuer une première requête `GET` en récupérant les données de la première page. Observer la réponse de la requête.
 4. Effectuer une requête `GET` en récupérant les données de la page 1 avec 5 résultats
@@ -64,7 +64,7 @@ import requests
 import json
 
 # URL de base de l'API
-base_url = "https://data.ademe.fr/data-fair/api/v1/datasets/dpe-v2-logements-existants/lines"
+base_url = "https://data.ademe.fr/data-fair/api/v1/datasets/dpe03existant/lines"
 
 # Paramètres de la requête
 params = {
@@ -135,8 +135,8 @@ Voici quelques liens utiles :
 
 - [Défintion d'une API selon api.gouv.fr](https://api.gouv.fr/guides/api-definition)
 - [HTTP methodes](https://blog.postman.com/what-are-http-methods/)
-- [API des logements neufs](https://data.ademe.fr/datasets/dpe-v2-logements-neufs/api-doc)
-- [API des logements existants](https://data.ademe.fr/datasets/dpe-v2-logements-existants/api-doc)
+- [API des logements neufs](https://data.ademe.fr/datasets/dpe02neuf/api-doc?operation=readLines)
+- [API des logements existants](https://data.ademe.fr/datasets/dpe03existant/api-doc?operation=readLines)
 - [API - GET query with range parameters from ElasticSearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#_ranges)
 - [Base Adresse Nationale au format .csv](https://adresse.data.gouv.fr/donnees-nationales)
 - [Enedis API](https://data.enedis.fr/explore/dataset/consommation-annuelle-residentielle-par-adresse/api/)
