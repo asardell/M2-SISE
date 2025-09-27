@@ -1,0 +1,1 @@
+Pour ce chapitre 3 nous allons suivre le cours complet de GIT proposé dans ce [repos](https://github.com/asardell/git-get-started).
