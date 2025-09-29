@@ -28,8 +28,8 @@ Voici les objectifs de ce module :
 Voici quelques liens utiles :
 - [Contexte du Challenge ENEDIS](https://defis.data.gouv.fr/defis/65b76f15d7874915c8e41298)
 - [Initiation à GitHub Desktop](https://docs.github.com/fr/desktop/overview/)
-- [API des logements neufs](https://data.ademe.fr/datasets/dpe-v2-logements-neufs/api-doc)
-- [API des logements existants](https://data.ademe.fr/datasets/dpe-v2-logements-existants/api-doc)
+- [API des logements neufs](https://data.ademe.fr/datasets/dpe02neuf/api-doc?operation=readLines)
+- [API des logements existants](https://data.ademe.fr/datasets/dpe03existant/api-doc?operation=readLines)
 - [API - GET query with range parameters from ElasticSearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#_ranges)
 - [Base Adresse Nationale au format .csv](https://adresse.data.gouv.fr/donnees-nationales)
 - [Markdown Cheat Sheet](https://www.markdownguide.org/cheat-sheet/)
