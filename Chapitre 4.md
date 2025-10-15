@@ -12,7 +12,10 @@ Dans ce TD, vous utiliserez le même repository  `m2_enedis` de la séance préc
 
 ## Exercice 1 - Création d'environnement virtuel
 
-Toutes les questions de cet exercice sont à réaliser dans l'invite de commandes. Attention, les commandes peuvent-être différentes si vous n'êtes pas sur un environnement Windows.
+Toutes les questions de cet exercice sont à réaliser dans l'invite de commandes **CMD** sur Windows. 
+
+:warning: Les commandes peuvent être différentes si vous êtes sur Linux ou MacOS.
+
 
 1. Ouvrer une fenêtre d'invite de commandes.
 
@@ -66,7 +69,7 @@ py -m venv env-enedis
 Il faut bien penser à changer de chemin et vous positionner dans le dossier où vous souhaitez créer votre environnement virtuel. Voici un exemple : 
 
 ```sh
-cd C:\Users\Anthony\Documents\asardell\my_virtual_envs
+cd C:\Users\asardell\Documents\my_virtual_envs
 ```
 
 Pour rappel, la commande `cd` pour *change directory* permet de se déplacer de dossier en dossier en changeant le chemin du répertoire courant.
@@ -113,35 +116,36 @@ pip list
 
 7. Exporter votre environnement virtuel dans un fichier appelé *requirements.txt* avec la commande suivante : 
 
+Cette commande capture la liste des packages installés avec leurs versions exactes et les enregistre dans un fichier *requirements.txt* qui sera créé dans le **répertoire actuel**.
+
 ```sh
+cd C:\Users\asardell\Documents\m2_enedis
 pip freeze > requirements.txt
 ```
 
-Cette commande capture la liste des packages installés avec leurs versions exactes et les enregistre dans un fichier *requirements.txt* qui sera créé dans le **répertoire actuel**.
 
 ![](img/warning.gif)
 
-Dans cette question on souhaite enregistrer le fichier *requirements.txt* à la racine de votre repository local.
+:warning: Ne pas créer le fichier  *requirements.txt*  dans le dossier de l'environnement virtuel mais dans le dossier de votre repository local.
+
 
 8. Désactiver votre environnement et fermer le terminal de commande.
 
 9. Créer un autre environnement virtuel appelé `test-env` pour faire un test uniquement dans le cadre de cet exercice.
 
-10.  Le fichier *requirements.txt* généré dans la question précédente peut ensuite être partagé avec d'autres personnes ou utilisé pour recréer un environnement Python. Pour installer les dépendances à partir de ce fichier, vous pouvez utiliser la commande suivante :
+10.   Le fichier *requirements.txt* généré dans la question précédente peut ensuite être partagé avec d'autres personnes ou utilisé pour recréer un environnement Python. Pour installer les dépendances à partir de ce fichier, vous pouvez utiliser la commande suivante :
 
 ```sh
-pip install -r requirements.txt
+pip install -r C:\Users\asardell\Documents\m2_enedis\requirements.txt
 ```
 
-:warning: Il faut se placer dans le répértoire où le fichier est présent sinon il sera introuvable.
-
-11. Vérifier que les librairies du fichier *requirements.txt* ont bien été installées sur l'environnement `test-env`.
+11.  Vérifier que les librairies du fichier *requirements.txt* ont bien été installées sur l'environnement `test-env`.
 
 ## Exercice 3 - Utiliser son environnement virtuel dans Visual Studio Code
 
-Toutes les questions de cet exercice sont à réaliser sur une branche *`DEV`* de votre repository `m2_enedis` en activant votre environnement virtuel `env-enedis`.
-
 1. Ouvrer Visual Studio Code et activer votre environnement depuis un invite de commandes *cmd* de VS Code. 
+
+:warning: Pour que VS Code détecte automatiquement vos environnements virtuels, il est conseillé de créer votre environnement virtuel dans votre dossier `m2_enedis`.
 
 2. Créer un script python appelée *`step1.py`* à la racine de votre projet. Ajouter une ligne de code dans le script :
 
@@ -156,9 +160,28 @@ python step1.py
 ```
 4. Le résultat de votre print s'affiche dans la console.
 
+5. Travailler avec Jupyter dans Vs Code
+
+:warning: Pour une utilisation de Jupyter dans VS Code, installer également `ipykernel` après avoir activité l'environnement `env-enedis` :
+
+```cmd
+pip install ipykernel
+python -m ipykernel install --user --name=env-enedis --display-name "Python (env-enedis)"
+```
+
+| Partie | Description |
+|--------|-------------|
+| `python -m ipykernel` | Exécute le module `ipykernel` avec l’interpréteur Python actif. `ipykernel` permet à Jupyter de communiquer avec Python. |
+| `install` | Indique qu’on souhaite **installer un nouveau kernel** dans Jupyter. |
+| `--user` | Installe le kernel pour l’utilisateur courant (pas besoin de droits administrateurs). |
+| `--name=env-enedis` | Nom interne du kernel (utilisé par Jupyter pour identifier cet environnement). |
+| `--display-name "Python (env-enedis)"` | Nom affiché dans l’interface Jupyter ou VS Code pour sélectionner le kernel. |
+
+:bulb: Jupyter doit voir Python et les packages de l’environnement. Si l’environnement n’est pas activé, `ipykernel` s’installera dans le Python global et Jupyter ne pourra pas utiliser l'environnement isolé. Il faut d’abord créer et activer l’environnement avant de le lier à Jupyter.
 
 ## Liens utiles
 
 Voici quelques liens utiles qui pourrait vous aider durant ce projet :
 
 - [Environnement virtuel](https://www.docstring.fr/glossaire/environnement-virtuel)
+
