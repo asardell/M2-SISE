@@ -460,7 +460,7 @@ Docker n’est pas seulement utilisé en développement local : il est **largeme
 
 :bulb: En résumé, Docker est devenu un **standard du déploiement cloud moderne**, car il garantit une compatibilité totale entre ton environnement local et la production.
 
-:bulb: - **Heroku / Render / Fly.io** : acceptent les images Docker pour héberger des applications web comme Streamlit.
+:bulb: **Heroku / Render / Fly.io** : acceptent les images Docker pour héberger des applications web comme Streamlit.
 
 ### Les commandes Docker principales
 
@@ -648,3 +648,4 @@ Voici quelques liens utiles :
 - [Tutoriel Streamlit](https://docs.streamlit.io/get-started/fundamentals/main-concepts)
 - [Tutoriel Flask](https://flask.palletsprojects.com/en/3.0.x/quickstart/)
 - [Postman](https://www.postman.com/downloads/)
+- [Docker Hub](https://hub.docker.com/_/docker)
