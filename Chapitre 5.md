@@ -8,39 +8,39 @@ Voici les objectifs de ce module :
 - [x] Optimiser les paramètres d'un modèle
 - [x] Interpréter un modèle
 
-1. [Chapitre 5 : Les bases du machine learning](#chapitre-5--les-bases-du-machine-learning)
-   1. [Objectifs](#objectifs)
-   2. [Classification](#classification)
-      1. [Variable cible](#variable-cible)
-      2. [Variables explicatives](#variables-explicatives)
-      3. [Echantillonnage](#echantillonnage)
-      4. [Arbre de décision](#arbre-de-décision)
-      5. [Evaluation de modèle](#evaluation-de-modèle)
-      6. [Validation croisée](#validation-croisée)
-      7. [Optimisation des paramètres](#optimisation-des-paramètres)
-      8. [Courbe ROC pour comparer des modèles](#courbe-roc-pour-comparer-des-modèles)
-      9. [D'autres méthodes](#dautres-méthodes)
-         1. [KNN](#knn)
-         2. [Régression logistique](#régression-logistique)
-         3. [Random Forest](#random-forest)
-         4. [Aller plus loin avec SMOTE pour ré équilibrer les classes](#aller-plus-loin-avec-smote-pour-ré-équilibrer-les-classes)
-         5. [Aller plus loin avec SHAP pour interpréter ses modèles](#aller-plus-loin-avec-shap-pour-interpréter-ses-modèles)
-   3. [Régression](#régression)
-      1. [Variable cible](#variable-cible-1)
-      2. [Variables explicatives](#variables-explicatives-1)
-      3. [Echantillonnage](#echantillonnage-1)
-      4. [Régression linéaire multiple](#régression-linéaire-multiple)
-         1. [Sans centrer réduire](#sans-centrer-réduire)
-      5. [Evaluation de modèle](#evaluation-de-modèle-1)
-         1. [Avec centrer réduire](#avec-centrer-réduire)
-      6. [Data leakage](#data-leakage)
-      7. [D'autres méthodes](#dautres-méthodes-1)
-         1. [Ridge](#ridge)
-         2. [Lasso](#lasso)
-         3. [Elasticnet](#elasticnet)
-         4. [Arbre de régression](#arbre-de-régression)
-         5. [Forêt aléatoire pour la régression](#forêt-aléatoire-pour-la-régression)
-   4. [Liens utiles](#liens-utiles)
+- [Chapitre 5 : Les bases du machine learning](#chapitre-5--les-bases-du-machine-learning)
+  - [Objectifs](#objectifs)
+  - [Classification](#classification)
+    - [Variable cible](#variable-cible)
+    - [Variables explicatives](#variables-explicatives)
+    - [Echantillonnage](#echantillonnage)
+    - [Arbre de décision](#arbre-de-décision)
+    - [Evaluation de modèle](#evaluation-de-modèle)
+    - [Validation croisée](#validation-croisée)
+    - [Optimisation des paramètres](#optimisation-des-paramètres)
+    - [Courbe ROC pour comparer des modèles](#courbe-roc-pour-comparer-des-modèles)
+    - [D'autres méthodes](#dautres-méthodes)
+      - [KNN](#knn)
+      - [Régression logistique](#régression-logistique)
+      - [Random Forest](#random-forest)
+      - [Aller plus loin avec SMOTE pour ré équilibrer les classes](#aller-plus-loin-avec-smote-pour-ré-équilibrer-les-classes)
+      - [Aller plus loin avec SHAP pour interpréter ses modèles](#aller-plus-loin-avec-shap-pour-interpréter-ses-modèles)
+  - [Régression](#régression)
+    - [Variable cible](#variable-cible-1)
+    - [Variables explicatives](#variables-explicatives-1)
+    - [Echantillonnage](#echantillonnage-1)
+    - [Régression linéaire multiple](#régression-linéaire-multiple)
+      - [Sans centrer réduire](#sans-centrer-réduire)
+    - [Evaluation de modèle](#evaluation-de-modèle-1)
+      - [Avec centrer réduire](#avec-centrer-réduire)
+    - [Data leakage](#data-leakage)
+    - [D'autres méthodes](#dautres-méthodes-1)
+      - [Ridge](#ridge)
+      - [Lasso](#lasso)
+      - [Elasticnet](#elasticnet)
+      - [Arbre de régression](#arbre-de-régression)
+      - [Forêt aléatoire pour la régression](#forêt-aléatoire-pour-la-régression)
+  - [Liens utiles](#liens-utiles)
 
 
 
@@ -1132,3 +1132,13 @@ Voici quelques liens utiles :
 - [Bagging](https://en.wikipedia.org/wiki/Bootstrap_aggregating#/media/File:Ensemble_Bagging.svg) vs [Boosting](https://en.wikipedia.org/wiki/Boosting_(machine_learning)#/media/File:Ensemble_Boosting.svg)
 - [Cas des classes déséquilibrées](https://machinelearningmastery.com/smote-oversampling-for-imbalanced-classification/)
 - [Interprter des modèles avec SHAP](https://towardsdatascience.com/using-shap-values-to-explain-how-your-machine-learning-model-works-732b3f40e137)
+
+
+
+
+Ps : 
+- ajouter dbscan pour les outliers
+- ajouter ACP/ACM pour l'exploration pré modélisation
+  
+
+  

@@ -413,7 +413,156 @@ streamlit hello
 
 ## Initiation à Docker
 
-Intro à Docker (en cours de rédaction)
+### Qu’est-ce que Docker ?
+
+Docker est une **plateforme de conteneurisation** qui permet d’exécuter des applications dans des environnements isolés appelés **conteneurs**.  
+Un conteneur embarque tout ce dont une application a besoin pour fonctionner : le code, les dépendances, la configuration, le système de fichiers minimal, etc.
+
+En d’autres termes, Docker garantit que ton application fonctionnera **de la même manière sur toutes les machines**, peu importe le système d’exploitation ou les dépendances locales.
+
+### Pourquoi utiliser Docker ?
+
+- **Portabilité** : ton application peut être exécutée sur n’importe quelle machine disposant de Docker.  
+- **Isolation** : chaque conteneur est indépendant (pas de conflits entre environnements).  
+- **Reproductibilité** : ton environnement de développement, de test et de production est identique.  
+- **Déploiement simplifié** : un simple `docker run` permet de lancer ton application.  
+- **Léger** : contrairement aux machines virtuelles, les conteneurs partagent le même noyau système et sont plus rapides à démarrer.
+
+### Avantages et Inconvénients de Docker
+
+#### Avantages
+- **Rapidité** : les conteneurs démarrent en quelques secondes  
+- **Légèreté** : moins de ressources nécessaires que des machines virtuelles  
+- **Facilité de déploiement** : un même conteneur peut tourner sur Windows, macOS, Linux ou un serveur cloud  
+- **Versionnement et contrôle** : les images sont versionnées et traçables
+- **Écosystème riche** : grand nombre d’images disponibles sur Docker Hub (bases de données, frameworks, etc.)  
+- **Intégration continue (CI/CD)** : parfait pour automatiser les tests et les déploiements
+
+#### Inconvénients
+- **Apprentissage** : nécessite une compréhension de base des concepts système (réseau, volumes, images)
+- **Gestion du stockage** : les conteneurs et images peuvent occuper beaucoup d’espace disque
+- **Non adapté à tout** : certaines applications nécessitant des interfaces graphiques complexes sont plus difficiles à conteneuriser
+- **Sécurité** : si mal configuré, un conteneur peut exposer des vulnérabilités du système hôte
+
+
+#### Docker et le Cloud
+
+Docker n’est pas seulement utilisé en développement local : il est **largement adopté dans le cloud** pour **héberger, déployer et gérer des applications** de manière scalable et fiable.
+
+##### Pourquoi Docker dans le Cloud ?
+
+- **Portabilité totale** : une image Docker peut être déployée sur n’importe quel fournisseur cloud (AWS, Azure, Google Cloud, OVH, etc.) sans modification du code.  
+- **Déploiement rapide** : les conteneurs se lancent en quelques secondes, ce qui facilite la mise à jour et la montée en charge des applications.  
+- **Scalabilité automatique** : les plateformes cloud peuvent automatiquement ajouter ou supprimer des conteneurs selon la charge.  
+- **Intégration avec les orchestrateurs** : Docker s’intègre parfaitement avec **Kubernetes**, **AWS ECS**, **Azure Container Apps**, ou **Google Kubernetes Engine (GKE)** pour le déploiement à grande échelle.  
+- **Moins de maintenance** : les images étant reproductibles et isolées, les déploiements sont plus sûrs et stables.
+
+
+:bulb: En résumé, Docker est devenu un **standard du déploiement cloud moderne**, car il garantit une compatibilité totale entre ton environnement local et la production.
+
+:bulb: - **Heroku / Render / Fly.io** : acceptent les images Docker pour héberger des applications web comme Streamlit.
+
+### Les commandes Docker principales
+
+| Commande | Description |
+|-----------|--------------|
+| `docker --version` | Vérifie l’installation de Docker |
+| `docker images` | Liste les images disponibles sur la machine |
+| `docker ps` | Liste les conteneurs en cours d’exécution |
+| `docker ps -a` | Liste tous les conteneurs (même arrêtés) |
+| `docker run <image>` | Lance un conteneur à partir d’une image |
+| `docker stop <id>` | Arrête un conteneur |
+| `docker rm <id>` | Supprime un conteneur |
+| `docker rmi <image>` | Supprime une image |
+| `docker build -t <nom_image> .` | Construit une image Docker depuis un Dockerfile |
+| `docker exec -it <id> bash` | Ouvre un terminal dans un conteneur en cours d’exécution |
+| `docker pull <nom_image>` | Télécharger une image officielle |
+| `docker login` | Se connecter à ton compte Docker Hub |
+| `docker tag <nom_image> <user>/<nom_image>:<nom_tag>` | Taguer ton image avant publication |
+| `docker push <user>/<nom_image>:<nom_tag>` | Publier ton image sur Docker Hub |
+
+### Docker Hub
+
+[Docker Hub](https://hub.docker.com/_/docker) est une plateforme en ligne qui sert de **registre d’images Docker**.  
+C’est l’endroit où tu peux **télécharger, partager et publier** des images Docker.
+
+#### Utilisations principales :
+- **Télécharger des images officielles** (Python, Ubuntu, MySQL, Nginx, etc.)  
+- **Partager ses propres images** avec l’équipe ou la communauté  
+- **Automatiser les builds** depuis GitHub ou GitLab  
+- **Stocker des images privées** pour des projets internes
+
+
+### Exemple : Dockeriser une application Streamlit
+
+#### Structure du projet
+
+```
+mon_app_streamlit
+ ┣ app.py
+ ┣ requirements.txt
+ ┗ Dockerfile
+```
+
+#### Contenu du fichier `app.py`
+
+```python
+# Import packages
+import streamlit as st
+import pandas as pd
+
+# Incorporate data
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder2007.csv')
+
+# Initialize the app
+st.title('My First App with Data')
+
+# Display the data in a table
+st.dataframe(df)
+```
+
+#### Contenu du fichier `requirements.txt`
+
+```
+streamlit
+```
+
+#### Contenu du fichier `Dockerfile`
+
+```Dockerfile
+# Étape 1 : Utiliser une image Python officielle
+FROM python:3.11-slim
+
+# Étape 2 : Définir le répertoire de travail
+WORKDIR /app
+
+# Étape 3 : Copier les fichiers de l’application
+COPY . /app
+
+# Étape 4 : Installer les dépendances
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Étape 5 : Exposer le port par défaut de Streamlit
+EXPOSE 8501
+
+# Étape 6 : Lancer l’application
+CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+```
+
+#### Construire l’image Docker
+
+```bash
+docker build -t mon_app_streamlit .
+```
+
+#### Lancer le conteneur
+
+```bash
+docker run -p 8501:8501 mon_app_streamlit
+```
+
+:bulb: L’application sera disponible sur [http://localhost:8501](http://localhost:8501)
+
 
 ## Créer une API avec différentes ROUTE
 
