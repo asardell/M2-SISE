@@ -160,26 +160,40 @@ python step1.py
 ```
 4. Le résultat de votre print s'affiche dans la console.
 
-5. Travailler avec Jupyter dans Vs Code
+## Exercice 4 - Travailler avec Jupyter dans Vs Code
 
-:warning: Pour une utilisation de Jupyter dans VS Code, installer également `ipykernel` après avoir activité l'environnement `env-enedis` :
+1. Ouvrez VS Code dans votre projet.
+2. Ouvrez le terminal intégré (cmd ou PowerShell).
+3. Activez votre environnement virtuel comme montré précédemment.
+4. Vérifiez que VS Code utilise l’interpréteur Python de l’environnement activé.
+
+
+:warning: Pour que VS Code détecte automatiquement vos environnements virtuels, il est conseillé de créer votre environnement virtuel dans votre dossier.
+
+:bulb:  Pour une utilisation de Jupyter dans VS Code, installer également `ipykernel` après avoir activité l'environnement :
 
 ```cmd
+pip install notebook
 pip install ipykernel
-python -m ipykernel install --user --name=env-enedis --display-name "Python (env-enedis)"
+jupyter notebook
 ```
+Vous accéder sur le navigateur Jupyter en cliquant sur le lien du terminal.
 
-| Partie | Description |
-|--------|-------------|
-| `python -m ipykernel` | Exécute le module `ipykernel` avec l’interpréteur Python actif. `ipykernel` permet à Jupyter de communiquer avec Python. |
-| `install` | Indique qu’on souhaite **installer un nouveau kernel** dans Jupyter. |
-| `--user` | Installe le kernel pour l’utilisateur courant (pas besoin de droits administrateurs). |
-| `--name=env-enedis` | Nom interne du kernel (utilisé par Jupyter pour identifier cet environnement). |
-| `--display-name "Python (env-enedis)"` | Nom affiché dans l’interface Jupyter ou VS Code pour sélectionner le kernel. |
+## Exercice 5 - Notebooks interactifs dans VS Code
 
-:bulb: Jupyter doit voir Python et les packages de l’environnement. Si l’environnement n’est pas activé, `ipykernel` s’installera dans le Python global et Jupyter ne pourra pas utiliser l'environnement isolé. Il faut d’abord créer et activer l’environnement avant de le lier à Jupyter.
+Installer les extensions nécessaires
 
-## Liens utiles
+1. Ouvrez VS Code et va dans **Extensions** (Ctrl+Shift+X).  
+2. Installez **Python** (par Microsoft).  
+3. Installez **Jupyter** (par Microsoft).  
+
+Ces deux extensions sont indispensables pour travailler avec des notebooks interactifs.
+
+### Créer un notebook interactif
+
+1. Appuie sur **Ctrl+Shift+P** → tape `Jupyter: Create New Blank Notebook`.  
+2. Choisis le **kernel** correspondant à ton environnement Python (ex. `env-ademe`).  
+3. On peut maintenant écrire et exécuter du code cellule par cellule directement dans VS Code.
 
 Voici quelques liens utiles qui pourrait vous aider durant ce projet :
 
