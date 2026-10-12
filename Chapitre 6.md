@@ -23,10 +23,33 @@ Voici les objectifs de ce module :
     - [Se connecter à des données](#se-connecter-à-des-données-2)
     - [Aller plus loin](#aller-plus-loin)
   - [Initiation à Docker](#initiation-à-docker)
-  - [Créer une API avec différentes ROUTE](#créer-une-api-avec-différentes-route)
+    - [Qu’est-ce que Docker ?](#quest-ce-que-docker-)
+    - [Pourquoi utiliser Docker ?](#pourquoi-utiliser-docker-)
+    - [Avantages et Inconvénients de Docker](#avantages-et-inconvénients-de-docker)
+      - [Avantages](#avantages)
+      - [Inconvénients](#inconvénients)
+      - [Docker et le Cloud](#docker-et-le-cloud)
+        - [Pourquoi Docker dans le Cloud ?](#pourquoi-docker-dans-le-cloud-)
+    - [Les commandes Docker principales](#les-commandes-docker-principales)
+    - [Docker Hub](#docker-hub)
+      - [Utilisations principales :](#utilisations-principales-)
+    - [Exemple : Dockeriser une application Streamlit](#exemple--dockeriser-une-application-streamlit)
+      - [Structure du projet](#structure-du-projet)
+      - [Contenu du fichier `app.py`](#contenu-du-fichier-apppy)
+      - [Contenu du fichier `requirements.txt`](#contenu-du-fichier-requirementstxt)
+      - [Contenu du fichier `Dockerfile`](#contenu-du-fichier-dockerfile)
+      - [Construire l’image Docker](#construire-limage-docker)
+      - [Lancer le conteneur](#lancer-le-conteneur)
+  - [Créer une API avec Flask](#créer-une-api-avec-flask)
     - [Création](#création)
     - [Tester les routes](#tester-les-routes)
+  - [Créer une API avec FastAPI](#créer-une-api-avec-fastapi)
+    - [1. Fichiers à créer](#1-fichiers-à-créer)
+    - [2. Commandes Docker](#2-commandes-docker)
+    - [3. Documentation de l'API](#3-documentation-de-lapi)
+    - [4. Tester les routes](#4-tester-les-routes)
   - [Liens utiles](#liens-utiles)
+
 
 
 ## Dash
@@ -564,7 +587,7 @@ docker run -p 8501:8501 mon_app_streamlit
 :bulb: L’application sera disponible sur [http://localhost:8501](http://localhost:8501)
 
 
-## Créer une API avec différentes ROUTE
+## Créer une API avec Flask
 
 ### Création
 
@@ -639,6 +662,173 @@ http://127.0.0.1:5000/api/greet?name=Alice
 
 4. Tester les routes avec Postman
 
+## Créer une API avec FastAPI
+
+### 1. Fichiers à créer
+
+- `main.py` : routes de l'API FastAPI.
+
+```py
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+
+app = FastAPI(
+    title="Mon API",
+    description="Documentation de mon API avec FastAPI et Docker",
+    version="1.0.0",
+)
+
+
+class UserCreate(BaseModel):
+    name: str
+    email: str
+
+
+users = {
+    1: {"id": 1, "name": "Alice", "email": "alice@example.com"}
+}
+
+
+@app.get("/")
+def home():
+    return {"message": "Bienvenue sur mon API"}
+
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
+
+@app.get("/users", tags=["Users"])
+def get_users():
+    return list(users.values())
+
+
+@app.get("/users/{user_id}", tags=["Users"])
+def get_user(user_id: int):
+    user = users.get(user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="Utilisateur introuvable")
+    return user
+
+
+@app.post("/users", tags=["Users"], status_code=201)
+def create_user(user: UserCreate):
+    user_id = max(users.keys(), default=0) + 1
+    new_user = {"id": user_id, **user.model_dump()}
+    users[user_id] = new_user
+    return new_user
+```
+
+
+- `requirements.txt` : dépendances Python (`fastapi`, `uvicorn[standard]`).
+
+```txt
+fastapi
+uvicorn[standard]
+```
+
+- `Dockerfile` : configuration de l'image Docker.
+
+```Dockerfile
+FROM python:3.12-slim
+
+WORKDIR /app
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY main.py .
+
+EXPOSE 8000
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+```
+
+- `compose.yaml` : configuration du conteneur Docker et des ports.
+
+
+```yaml
+services:
+  api:
+    build: .
+    container_name: fastapi-local
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+```
+
+
+- `.dockerignore` : fichiers à exclure de l'image Docker.
+
+```bash
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.git/
+.pytest_cache/
+```
+
+### 2. Commandes Docker
+
+Construire l'image et démarrer l'API :
+
+```bash
+docker compose up --build -d
+```
+
+Afficher les logs :
+
+```bash
+docker compose logs -f api
+```
+
+Vérifier les conteneurs actifs :
+
+```bash
+docker compose ps
+```
+
+Arrêter les conteneurs :
+
+```bash
+docker compose down
+```
+
+### 3. Documentation de l'API
+
+Base URL : http://localhost:8000
+
+- **Swagger UI** : http://localhost:8000/docs
+  - Documentation interactive pour consulter et tester les routes.
+- **ReDoc** : http://localhost:8000/redoc
+  - Documentation lisible et organisée par endpoint.
+- **OpenAPI JSON** : http://localhost:8000/openapi.json
+  - Schéma JSON de l'API, importable dans Postman.
+
+### 4. Tester les routes
+
+Dans Swagger UI, ouvrir une route, cliquer sur **Try it out**, puis sur **Execute**.
+
+Routes disponibles dans l'exemple :
+
+- `GET /` : vérifier que l'API répond.
+- `GET /health` : vérifier l'état de l'API.
+- `GET /users` : lister les utilisateurs.
+- `GET /users/{user_id}` : récupérer un utilisateur.
+- `POST /users` : créer un utilisateur.
+
+Pour tester avec Postman : https://www.postman.com/
+
+Pour importer automatiquement les routes dans Postman, utiliser **Import** et fournir l'URL :
+
+http://localhost:8000/openapi.json
+
 ## Liens utiles
 
 Voici quelques liens utiles :
@@ -649,3 +839,6 @@ Voici quelques liens utiles :
 - [Tutoriel Flask](https://flask.palletsprojects.com/en/3.0.x/quickstart/)
 - [Postman](https://www.postman.com/downloads/)
 - [Docker Hub](https://hub.docker.com/_/docker)
+- [Cours Docker](https://github.com/asardell/cloud-computing/blob/main/Docker.md)
+- [FastAPI](https://fastapi.tiangolo.com/)
+- [Postman](https://learning.postman.com/docs/)
